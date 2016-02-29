@@ -566,11 +566,17 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  ## PLOT TRAINING SET PINTS
+  ## PLOT TRAINING SET POINTS
   training.map <- function(x) {
     if (!is.null(isolate(input$response))) {
-      attr <- x@data[, isolate(input$response)]
-      var <- isolate(input$response)
+      if (isolate(input$response) %in% names(dat$monitor)) {
+        attr <- x@data[, isolate(input$response)]
+        var <- isolate(input$response)
+      }
+      else {
+        attr <- x@data[, 1]
+        var <- names(x@data)[1]
+      }
     }
     else {
       attr <- x@data[, 1]
