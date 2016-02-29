@@ -133,14 +133,14 @@ body <- dashboardBody(
       fluidRow(column(
         width = 6,
         box(
-          title = "Training set attributes", status = "primary", width = 12, solidHeader = TRUE,
+          title = "Training set attributes", status = "primary", width = 12, solidHeader = TRUE, collapsible = TRUE,
           div(DT::dataTableOutput('table.trainingset'), style = "font-size: 65%")
         )
       ),
       column(
         width = 6,
         box(
-          title = "Training set map", status = "primary", width = 12, solidHeader = TRUE,
+          title = "Training set map", status = "primary", width = 12, solidHeader = TRUE, collapsible = TRUE,
           fluidRow(column(
             width = 11, sliderInput("pointsize", NULL, 1, 50, 10, 1, ticks = FALSE)
           ),
@@ -150,7 +150,7 @@ body <- dashboardBody(
           )),
           leafletOutput("monitormap", width = "100%", height = 600)
         )
-      ))
+      ))    
     ),
     tabItem(tabName = "models",
             fluidRow(

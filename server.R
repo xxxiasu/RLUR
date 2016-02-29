@@ -13,12 +13,13 @@ require(RColorBrewer)
 
 ## TODO:
 ## Help files, fluidPage html
-## Monitoring pop-ups
+## Monitoring pop-ups, outliers
 
 shinyServer(function(input, output, session) {
   source("functions.R")
   source("spatial.R")
   source("global.R")
+  source("variableTable.R")
 
   ##########################
   ## TAB CHANGE EVENTS
