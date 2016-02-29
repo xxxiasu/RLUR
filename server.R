@@ -268,6 +268,8 @@ shinyServer(function(input, output, session) {
     tryCatch({
       inFile$ts <- NULL
       in.data$val <- read.csv(filename.exist$f$datapath)
+      in.data$val[is.na(in.data$val)] <- 0
+      in.data$val <- in.data$val[, sapply(in.data$val, is.numeric)]
       return(err.code)
     },
     warning = function(e) {
