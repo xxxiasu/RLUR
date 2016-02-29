@@ -1,6 +1,3 @@
-source("installPackages.R")
-get.packages()
-
 require(shiny)
 require(car)
 require(DT)
@@ -22,7 +19,6 @@ shinyServer(function(input, output, session) {
   source("functions.R")
   source("spatial.R")
   source("global.R")
-  source("variableTable.R")
 
   ##########################
   ## TAB CHANGE EVENTS
