@@ -1,4 +1,5 @@
-require(shiny)
+require(shiny) 
+require(RColorBrewer)
 
 ##################################################
 ## VARIABLE LISTS ACCORDING TO ESCAPE PROJECT
