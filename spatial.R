@@ -230,7 +230,7 @@ do.corine <-
         
         ## Progress bar
         if (is.function(updateProgress)) {
-          prog.message <- paste0("Buffering ", buffer.sizes[k], " :Point", p, "\\", length(monitors))
+          prog.message <- paste0("Buffering ", buffer.sizes[k], " :Point ", p, "\\", length(monitors))
           updateProgress(detail = prog.message)
         }
         
