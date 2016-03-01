@@ -282,7 +282,7 @@ shinyServer(function(input, output, session) {
   
   ## PROCESS CORINE BUFFERS
   observeEvent(input$action.corine, {
-    progress <- shiny::Progress$new(min = 0, max = 5)
+    progress <- shiny::Progress$new(min = 0, max = length(buffers.1) * length(dat$monitor))
     progress$set(message = "Computing", value = 0)
     on.exit(progress$close())
     updateProgress <- function(value = NULL, detail = NULL) {
@@ -338,7 +338,7 @@ shinyServer(function(input, output, session) {
       )
     })
     
-    progress <- shiny::Progress$new(min = 0, max = 6)
+    progress <- shiny::Progress$new(min = 0, max = length(buffers.2) * length(dat$monitor))
     progress$set(message = "Computing", value = 0)
     on.exit(progress$close())
     tryCatch({
@@ -363,7 +363,7 @@ shinyServer(function(input, output, session) {
   
   ##PROCESS POPN BUFFER
   observeEvent(input$action.popn, {
-    progress <- shiny::Progress$new(min = 0, max = 6)
+    progress <- shiny::Progress$new(min = 0, max = length(buffers.1))
     progress$set(message = "Computing", value = 0)
     on.exit(progress$close())
     
@@ -571,16 +571,16 @@ shinyServer(function(input, output, session) {
     if (!is.null(isolate(input$response))) {
       if (isolate(input$response) %in% names(dat$monitor)) {
         attr <- x@data[, isolate(input$response)]
-        var <- isolate(input$response)
+        resp <- isolate(input$response)
       }
       else {
         attr <- x@data[, 1]
-        var <- names(x@data)[1]
+        resp <- names(x@data)[1]
       }
     }
     else {
       attr <- x@data[, 1]
-      var <- names(x@data)[1]
+      resp <- names(x@data)[1]
     }
     leafletProxy("monitormap", data = x) %>%
       clearGroup("monitor") %>%
@@ -593,7 +593,7 @@ shinyServer(function(input, output, session) {
       ) %>%
       addLegend(
         position = "bottomleft", pal = colorNumeric(pal, c(min(attr), max(attr))),
-        title = var, values = attr, layerId = "mlegend"
+        title = resp, values = attr, layerId = "mlegend"
       ) 
   }
   
@@ -1337,7 +1337,7 @@ shinyServer(function(input, output, session) {
           unique(pred.vars[which(pred.vars %in% corine.vars) + 1])
         
         progress <-
-          shiny::Progress$new(min = 0, max = length(corine.buffers))
+          shiny::Progress$new(min = 0, max = length(corine.buffers) * length(pred.grid))
         progress$set(message = "Computing", value = 0)
         
         new.data <-
@@ -1363,7 +1363,7 @@ shinyServer(function(input, output, session) {
         
         progress <-
           shiny::Progress$new(
-            min = 0, max = length(road.buffers.maj) + length(road.buffers.all)
+            min = 0, max = length(unique(c(road.buffers.maj, road.buffers.all))) * length(pred.grid)     
           )
         progress$set(message = "Computing", value = 0)
         

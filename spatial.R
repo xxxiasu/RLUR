@@ -19,7 +19,7 @@ do.roads.dists <-
       dist.table <- c()
       for (p in 1:length(monitors)) {
         if (is.function(updateProgress)) {
-          prog.message <- paste("Measuring", p, sep = " ")
+          prog.message <- paste0("Measuring", ": Point ", p, "\\", length(monitors))
           updateProgress(detail = prog.message)
         }
         d <- gDistance(monitors[p,], roads, byid = TRUE)
@@ -58,7 +58,7 @@ do.roads.dists <-
       dist.table <- c()
       for (p in 1:length(monitors)) {
         if (is.function(updateProgress)) {
-          prog.message <- paste("Measuring", p, sep = " ")
+          prog.message <- paste0("Measuring", ": Point ", p, "\\", length(monitors))
           updateProgress(detail = prog.message)
         }
         d <- gDistance(monitors[p,], major, byid = TRUE)
@@ -118,81 +118,90 @@ do.roads.buffer <-
     
     ## Do intersection
     for (k in 1:length(buffers)) {
-      ## Progress bar
-      if (is.function(updateProgress)) {
-        prog.message <- paste("Buffering", buffers[k], sep = " ")
-        updateProgress(detail = prog.message)
-      }
-      
-      b <- gBuffer(monitors, byid = TRUE, width = buffers[k])
-      
-      ## MAJOR ROADS ONLY
-      if (buffers[k] %in% buffer.sizes.maj) {
-        i <- gIntersection(b, major, byid = TRUE)
-        lengths <- gLength(i, byid = TRUE)
-        line.ids <-
-          unlist(lapply(names(lengths), function(x)
-            unlist(strsplit(
-              as.character(x), " "
-            ))[2]))
-        rec.ids <-
-          unlist(lapply(names(lengths), function(x)
-            unlist(strsplit(
-              as.character(x), " "
-            ))[1]))
-        line.total <-
-          slot(roads[as.integer(line.ids) + 1,], "data")[, attr.all]
-        line.hgv <-
-          slot(roads[as.integer(line.ids) + 1,], "data")[, attr.hgv]
-        length.table <-
-          cbind(as.integer(rec.ids) + 1, as.integer(line.ids), lengths, line.total, line.hgv)
-        colnames(length.table) <-
-          c("RecID", "LineID", "Length", "Total", "HGV")
-        for (p in 1:length(monitors)) {
-          length.p <-
-            length.table[which(length.table[,"RecID"] == p), ,drop = FALSE]
-          total.roads <- sum(length.p[, 3])
-          traffic.loads[p, paste("MAJORROADLENGTH", buffers[k], sep = "_")] <-
-            total.roads
-          traffic.loads[p, paste("TRAFMAJORLOAD", buffers[k], sep = "_")] <-
-            sum(length.p[, "Length"] * length.p[, "Total"])
-          traffic.loads[p, paste("HEAVYTRAFMAJORLOAD", buffers[k], sep = "_")] <-
-            sum(length.p[, "Length"] * length.p[, "HGV"])
+      for (p in 1:length(monitors)) {
+        
+        ## Progress bar
+        if (is.function(updateProgress)) {
+          prog.message <- paste0("Buffering ", buffers[k], " :Point ", p, "\\", length(monitors))
+          updateProgress(detail = prog.message)
         }
-      }
-      
-      ## ALL ROADS
-      if (buffers[k] %in% buffer.sizes.all) {
-        i <- gIntersection(b, roads, byid = TRUE)
-        lengths <- gLength(i, byid = TRUE)
-        line.ids <-
-          unlist(lapply(names(lengths), function(x)
-            unlist(strsplit(
-              as.character(x), " "
-            ))[2]))
-        rec.ids <-
-          unlist(lapply(names(lengths), function(x)
-            unlist(strsplit(
-              as.character(x), " "
-            ))[1]))
-        line.total <-
-          slot(roads[as.integer(line.ids) + 1,], "data")[, attr.all]
-        line.hgv <-
-          slot(roads[as.integer(line.ids) + 1,], "data")[, attr.hgv]
-        length.table <-
-          cbind(as.integer(rec.ids) + 1, as.integer(line.ids), lengths, line.total, line.hgv)
-        colnames(length.table) <-
-          c("RecID", "LineID", "Length", "Total", "HGV")
-        for (p in 1:length(monitors)) {
-          length.p <-
-            length.table[which(length.table[,"RecID"] == p), ,drop = FALSE]
-          total.roads <- sum(length.p[, 3])
-          traffic.loads[p, paste("ROADLENGTH", buffers[k], sep = "_")] <-
-            total.roads
-          traffic.loads[p, paste("TRAFLOAD", buffers[k], sep = "_")] <-
-            sum(length.p[, "Length"] * length.p[, "Total"])
-          traffic.loads[p, paste("HEAVYTRAFLOAD", buffers[k], sep = "_")] <-
-            sum(length.p[, "Length"] * length.p[, "HGV"])
+        
+        b <- gBuffer(monitors[p, ], byid = TRUE, width = buffers[k])
+
+        ## MAJOR ROADS ONLY
+        if (buffers[k] %in% buffer.sizes.maj) {
+          i <- gIntersection(b, major, byid = TRUE)
+          if (is.null(i)) {
+            traffic.loads[p, paste("MAJORROADLENGTH", buffers[k], sep = "_")] <- 0
+            traffic.loads[p, paste("TRAFMAJORLOAD", buffers[k], sep = "_")] <- 0
+            traffic.loads[p, paste("HEAVYTRAFMAJORLOAD", buffers[k], sep = "_")] <- 0
+          }
+          else {
+            lengths <- gLength(i, byid = TRUE)
+            line.ids <-
+              unlist(lapply(names(lengths), function(x)
+                unlist(strsplit(
+                  as.character(x), " "
+                ))[2]))
+            rec.ids <-
+              unlist(lapply(names(lengths), function(x)
+                unlist(strsplit(
+                  as.character(x), " "
+                ))[1]))
+            line.total <-
+              slot(roads[as.integer(line.ids) + 1,], "data")[, attr.all]
+            line.hgv <-
+              slot(roads[as.integer(line.ids) + 1,], "data")[, attr.hgv]
+            length.table <-
+              cbind(as.integer(rec.ids) + 1, as.integer(line.ids), lengths, line.total, line.hgv)
+            colnames(length.table) <-
+              c("RecID", "LineID", "Length", "Total", "HGV")
+            total.roads <- sum(length.table[, 3])
+            traffic.loads[p, paste("MAJORROADLENGTH", buffers[k], sep = "_")] <-
+              total.roads
+            traffic.loads[p, paste("TRAFMAJORLOAD", buffers[k], sep = "_")] <-
+              sum(length.table[, "Length"] * length.table[, "Total"])
+            traffic.loads[p, paste("HEAVYTRAFMAJORLOAD", buffers[k], sep = "_")] <-
+              sum(length.table[, "Length"] * length.table[, "HGV"])
+          }
+        }
+        
+        ## ALL ROADS
+        if (buffers[k] %in% buffer.sizes.all) {
+          i <- gIntersection(b, roads, byid = TRUE)
+          if (is.null(i)) {
+            traffic.loads[p, paste("ROADLENGTH", buffers[k], sep = "_")] <- 0
+            traffic.loads[p, paste("TRAFLOAD", buffers[k], sep = "_")] <- 0
+            traffic.loads[p, paste("HEAVYTRAFLOAD", buffers[k], sep = "_")] <- 0
+          }
+          else {
+            lengths <- gLength(i, byid = TRUE)
+            line.ids <-
+              unlist(lapply(names(lengths), function(x)
+                unlist(strsplit(
+                  as.character(x), " "
+                ))[2]))
+            rec.ids <-
+              unlist(lapply(names(lengths), function(x)
+                unlist(strsplit(
+                  as.character(x), " "
+                ))[1]))
+            line.total <-
+              slot(roads[as.integer(line.ids) + 1,], "data")[, attr.all]
+            line.hgv <-
+              slot(roads[as.integer(line.ids) + 1,], "data")[, attr.hgv]
+            length.table <-
+              cbind(as.integer(rec.ids) + 1, as.integer(line.ids), lengths, line.total, line.hgv)
+            colnames(length.table) <-
+              c("RecID", "LineID", "Length", "Total", "HGV")
+            total.roads <- sum(length.table[, 3])
+            traffic.loads[p, paste("ROADLENGTH", buffers[k], sep = "_")] <-
+              total.roads
+            traffic.loads[p, paste("TRAFLOAD", buffers[k], sep = "_")] <-
+              sum(length.table[, "Length"] * length.table[, "Total"])
+            traffic.loads[p, paste("HEAVYTRAFLOAD", buffers[k], sep = "_")] <-
+              sum(length.table[, "Length"] * length.table[, "HGV"])
+          }
         }
       }
     }
@@ -217,78 +226,77 @@ do.corine <-
     
     ## Do intersection
     for (k in 1:length(buffer.sizes)) {
-      ## Progress bar
-      if (is.function(updateProgress)) {
-        prog.message <- paste("Buffering", buffer.sizes[k], sep = " ")
-        updateProgress(detail = prog.message)
-      }
-      b <- gBuffer(monitors, byid = TRUE, width = buffer.sizes[k])
-      i <- gIntersection(b, landcover, byid = TRUE)
-      area <- gArea(i, byid = TRUE)
-      ## Format table
-      poly.ids <-
-        unlist(lapply(names(area), function(x)
-          unlist(strsplit(
-            as.character(x), " "
-          ))[2]))
-      rec.ids <-
-        unlist(lapply(names(area), function(x)
-          unlist(strsplit(
-            as.character(x), " "
-          ))[1]))
-      poly.code <-
-        unlist(lapply(poly.ids, function(x)
-          slot(landcover[which(row.names(landcover) == x),], "data")[, attr.code]))
-      area.table <-
-        cbind(as.integer(rec.ids) + 1, as.integer(poly.ids), as.integer(poly.code), area)
-      colnames(area.table) <-
-        c("RecID", "PolyID", attr.code, "Area")
-      
-      ## Sum up the areas
       for (p in 1:length(monitors)) {
-        ## subset for this point
-        area.p <-
-          area.table[which(area.table[,"RecID"] == p), ,drop = FALSE]
+        
+        ## Progress bar
+        if (is.function(updateProgress)) {
+          prog.message <- paste0("Buffering ", buffer.sizes[k], " :Point", p, "\\", length(monitors))
+          updateProgress(detail = prog.message)
+        }
+        
+        b <- gBuffer(monitors[p, ], byid = TRUE, width = buffer.sizes[k])
+        i <- gIntersection(b, landcover, byid = TRUE)
+        
+        area <- gArea(i, byid = TRUE)
+        ## Format table
+        poly.ids <-
+          unlist(lapply(names(area), function(x)
+            unlist(strsplit(
+              as.character(x), " "
+            ))[2]))
+        rec.ids <-
+          unlist(lapply(names(area), function(x)
+            unlist(strsplit(
+              as.character(x), " "
+            ))[1]))
+        poly.code <-
+          unlist(lapply(poly.ids, function(x)
+            slot(landcover[which(row.names(landcover) == x),], "data")[, attr.code]))
+        area.table <-
+          cbind(as.integer(rec.ids) + 1, as.integer(poly.ids), as.integer(poly.code), area)          
+        colnames(area.table) <-
+          c("RecID", "PolyID", attr.code, "Area")
+
         ## sum categories
         if ("HDRES" %in% var.names)
           landcover.areas[p, paste("HDRES", buffer.sizes[k], sep = "_")] <-
-            sum(area.p[which(area.p[, attr.code] == 111), "Area"])
+          sum(area.table[which(area.table[, attr.code] == 111), "Area"])
         if ("LDRES" %in% var.names)
           landcover.areas[p, paste("LDRES", buffer.sizes[k], sep = "_")] <-
-            sum(area.p[which(area.p[, attr.code] == 112), "Area"])
+          sum(area.table[which(area.table[, attr.code] == 112), "Area"])
         if ("INDUSTRY" %in% var.names)
           landcover.areas[p, paste("INDUSTRY", buffer.sizes[k], sep = "_")] <-
-            sum(area.p[which(area.p[, attr.code] == 121), "Area"])
+          sum(area.table[which(area.table[, attr.code] == 121), "Area"])
         if ("PORT" %in% var.names)
           landcover.areas[p, paste("PORT", buffer.sizes[k], sep = "_")] <-
-            sum(area.p[which(area.p[, attr.code] == 123), "Area"])
+          sum(area.table[which(area.table[, attr.code] == 123), "Area"])
         if ("URBGREEN" %in% var.names)
           landcover.areas[p, paste("URBGREEN", buffer.sizes[k], sep = "_")] <-
-            sum(area.p[which(area.p[, attr.code] == 141), "Area"] +
-                  sum(area.p[which(area.p[, attr.code] == 142), "Area"]))
+          sum(area.table[which(area.table[, attr.code] == 141), "Area"] +
+                sum(area.table[which(area.table[, attr.code] == 142), "Area"]))
         if ("NATURAL" %in% var.names)
           landcover.areas[p, paste("NATURAL", buffer.sizes[k], sep = "_")] <-
-            sum(area.p[which(area.p[, attr.code] == 311), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 312), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 313), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 321), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 322), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 323), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 324), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 331), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 523), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 332), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 333), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 334), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 335), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 411), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 412), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 421), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 422), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 423), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 512), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 521), "Area"]) +
-            sum(area.p[which(area.p[, attr.code] == 522), "Area"])
+          sum(area.table[which(area.table[, attr.code] == 311), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 312), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 313), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 321), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 322), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 323), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 324), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 331), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 523), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 332), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 333), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 334), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 335), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 411), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 412), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 421), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 422), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 423), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 512), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 521), "Area"]) +
+          sum(area.table[which(area.table[, attr.code] == 522), "Area"])
       }
     }
     landcover.areas
