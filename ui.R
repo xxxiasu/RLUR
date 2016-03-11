@@ -162,7 +162,7 @@ body <- dashboardBody(
                   actionButton("action.clear", label = "Clear selection"),
                   br(),
                   br(),
-                  div(DT::dataTableOutput('training.set'), style = "font-size: 65%; width: 65%")
+                  div(DT::dataTableOutput('training.set'), style = "font-size: 65%")
                 )
               ),
               column(

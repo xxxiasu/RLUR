@@ -528,7 +528,8 @@ shinyServer(function(input, output, session) {
           ordering = FALSE,
           searching = FALSE,
           lengthMenu = NULL,
-          pageLength = 25
+          pageLength = 25,
+          extensions = 'Responsive'
         )
       )
     }
@@ -623,9 +624,11 @@ shinyServer(function(input, output, session) {
     input$action.clear
     validate(need(!is.null(inFile$ts), ""))
     DT::datatable(selectedData(), options = list(
+      scrollX = TRUE,
       searching = TRUE,
       pageLength = nrow(selectedData()),
-      lengthMenu = NULL
+      lengthMenu = NULL,
+      extensions = 'Responsive'
     ))
   })
   
@@ -646,10 +649,12 @@ shinyServer(function(input, output, session) {
     validate(need(!is.null(inFile$ts), ""))
     DT::datatable(
       selectedModel(), options = list(
+        scrollX = TRUE,
         ordering = FALSE,
         searching = FALSE,
         lengthMenu = NULL,
-        paging = FALSE
+        paging = FALSE,
+        extensions = 'Responsive'
       )
     )
   })
@@ -1556,7 +1561,8 @@ shinyServer(function(input, output, session) {
         searching = TRUE,
         lengthMenu = NULL,
         selection = "none",
-        pageLength = 15
+        pageLength = 15,
+        extensions = 'Responsive'
       )
     )
   })
