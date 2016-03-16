@@ -1571,15 +1571,49 @@ shinyServer(function(input, output, session) {
   ############################################################################################################
   #### HELP TAB ##############################################################################################
   
-  # Fluidpage, html
-  
-  
   output$instructions <- renderText({
-    readLines("help/instructions.html")
+    readLines("help/help1.htm")
   })
-  
-  
-  
+  observeEvent(input$help1, {
+    output$instructions <- renderText({
+      readLines("help/help1.htm")
+    })
+  })
+  observeEvent(input$help2, {
+    output$instructions <- renderText({
+      readLines("help/help2.htm")
+    })
+  })
+  observeEvent(input$help3, {
+    output$instructions <- renderText({
+      readLines("help/help3.htm")
+    })
+  })
+  observeEvent(input$help4, {
+    output$instructions <- renderText({
+      readLines("help/help4.htm")
+    })
+  })
+  observeEvent(input$help5, {
+    output$instructions <- renderText({
+      readLines("help/help5.htm")
+    })
+  })
+  observeEvent(input$help5a, {
+    output$instructions <- renderText({
+      readLines("help/help5a.htm")
+    })
+  })
+  observeEvent(input$help6, {
+    output$instructions <- renderText({
+      readLines("help/help6.htm")
+    })
+  })
+  observeEvent(input$help7, {
+    output$instructions <- renderText({
+      readLines("help/help7.htm")
+    })
+  })
 })
 
 ###################### END ######################

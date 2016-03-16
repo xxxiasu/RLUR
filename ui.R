@@ -252,7 +252,14 @@ body <- dashboardBody(
               4,
               box(
                 title = "Contents", status = "primary", width = 12, solidHeader = TRUE,
-                h3("qwerty")
+                div(actionLink("help1", "Introduction"), style = "font-size: 150%"),
+                div(actionLink("help2", "Test data"), style = "font-size: 150%"),
+                div(actionLink("help3", "Variable creation"), style = "font-size: 150%"),
+                div(actionLink("help4", "Training set"), style = "font-size: 150%"),
+                div(actionLink("help5", "Model Builder"), style = "font-size: 150%"),
+                div(actionLink("help5a", "Model guidelines"), style = "font-size: 150%"),          
+                div(actionLink("help6", "Predictions"), style = "font-size: 150%"),
+                div(actionLink("help7", "Further information"), style = "font-size: 150%")
               )
             )
             ,
