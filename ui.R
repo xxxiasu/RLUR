@@ -203,6 +203,7 @@ body <- dashboardBody(
           draggable = TRUE, top = 160, left = "auto", right = 20, bottom = "auto",
           width = 330, height = "auto",
           h3("Prediction extent"),
+          checkboxInput("cbtrunc", label = "Truncate values", value = FALSE),
           checkboxInput("cbrecept", label = "Specify point file", value = FALSE),
           conditionalPanel(
             "input.cbrecept == false",

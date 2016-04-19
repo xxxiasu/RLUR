@@ -12,7 +12,7 @@ require(shinyBS)
 require(RColorBrewer)
 
 ## TODO:
-## Help files, fluidPage html
+## Truncation on prediction
 ## Monitoring pop-ups, outliers
 
 shinyServer(function(input, output, session) {
@@ -1425,6 +1425,24 @@ shinyServer(function(input, output, session) {
             )
           )
         progress$close()
+      }
+      
+      ## TRUNCATE TO TRAINING SET MIN-MAX
+      if (input$cbtrunc == TRUE) {
+        for (i in names(new.data)[3:length(names(new.data))]) {
+          mx <- max(inFile$ts[, i])
+          mn <- min(inFile$ts[, i])
+          temp <- matrix(new.data[, i])
+          for (j in 1:nrow(new.data)) {
+            if(temp[j] < mn) {
+              temp[j] <- mn
+            }
+            else if(temp[j] > mx) {
+              temp[j] <- mx
+            }
+          }
+          new.data[, i] <- as.numeric(temp)
+        }
       }
       
       ## MAKE PREDICTION
