@@ -12,7 +12,6 @@ require(shinyBS)
 require(RColorBrewer)
 
 ## TODO:
-## Truncation on prediction
 ## Monitoring pop-ups, outliers
 
 shinyServer(function(input, output, session) {
