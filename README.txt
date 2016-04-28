@@ -26,7 +26,7 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 ######################################################
 
 ## (A) FROM LOCAL FILES:
-## OPEN THE EITHER THE DOWNLOADED 'SERVER.R' OR 'UI.R' FILE FROM (1) IN R STUDIO 
+## OPEN EITHER THE DOWNLOADED 'SERVER.R' OR 'UI.R' FILE FROM (1) IN R STUDIO 
 ## USE THE DROP-DOWN NEXT TO 'Run App' TO MAKE SURE 'Run External' is checked
 ## CLICK 'Run App' 
 

@@ -868,7 +868,6 @@ shinyServer(function(input, output, session) {
         train(
           as.formula(equ), data = inFile$ts, trControl = train_control, method = "lm"
         )
-      print(loocv$results)
       temp.1 <- paste0(
         equ, 
         "\n\nLOOCV RMSE: ", loocv$results[2], 
