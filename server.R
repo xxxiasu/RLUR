@@ -730,7 +730,7 @@ shinyServer(function(input, output, session) {
       ## REGRESSION
       dt1 <-
         data.frame(
-          Estimate = round((summary(lm.lur))$coefficients[, 1], 4),
+          Estimate = format((summary(lm.lur))$coefficients[, 1], scientific = TRUE),
           Std.Error = round((summary(lm.lur))$coefficients[, 2], 4),
           t.value = round((summary(lm.lur))$coefficients[, 3], 4),
           Prob. = round((summary(lm.lur))$coefficients[, 4], 4),
@@ -741,7 +741,7 @@ shinyServer(function(input, output, session) {
       rownames(dt1) <- names(lm.lur$coefficients)
       dt1 <-
         dt1[match(c("(Intercept)", input$training.set_rows_selected), rownames(dt1)),]
-      dt1$VIF <- this.lm.lur.vif
+      dt1$VIF <- round(this.lm.lur.vif, 4)
       dt1$RSq <- this.lm.step.r2
       dt1$AIC <- this.lm.step.aic
       dt1$RMSE <- round(this.lm.step.rmse, 4)
