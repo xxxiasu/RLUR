@@ -11,15 +11,12 @@ require(leaflet)
 require(shinyBS)
 require(RColorBrewer)
 
-## TODO:
-## Monitoring pop-ups, outliers
-
 shinyServer(function(input, output, session) {
   source("functions.R")
   source("spatial.R")
   source("global.R")
   source("variableTable.R")
-
+  
   ##########################
   ## TAB CHANGE EVENTS
   ##########################
@@ -83,7 +80,7 @@ shinyServer(function(input, output, session) {
         training.map.extent(tmp)
         
         ## get outliers
- ##  tmp.out <- subset(tmp, rownames(tmp@data) %in% "TODO: table selection")
+        ##  tmp.out <- subset(tmp, rownames(tmp@data) %in% "TODO: table selection")
         ##Pop-up row names
         ##Show outliers
       }
@@ -281,7 +278,8 @@ shinyServer(function(input, output, session) {
   
   ## PROCESS CORINE BUFFERS
   observeEvent(input$action.corine, {
-    progress <- shiny::Progress$new(min = 0, max = length(buffers.1) * length(dat$monitor))
+    progress <-
+      shiny::Progress$new(min = 0, max = length(buffers.1) * length(dat$monitor))
     progress$set(message = "Computing", value = 0)
     on.exit(progress$close())
     updateProgress <- function(value = NULL, detail = NULL) {
@@ -337,7 +335,8 @@ shinyServer(function(input, output, session) {
       )
     })
     
-    progress <- shiny::Progress$new(min = 0, max = length(buffers.2) * length(dat$monitor))
+    progress <-
+      shiny::Progress$new(min = 0, max = length(buffers.2) * length(dat$monitor))
     progress$set(message = "Computing", value = 0)
     on.exit(progress$close())
     tryCatch({
@@ -594,7 +593,7 @@ shinyServer(function(input, output, session) {
       addLegend(
         position = "bottomleft", pal = colorNumeric(pal, c(min(attr), max(attr))),
         title = resp, values = attr, layerId = "mlegend"
-      ) 
+      )
   }
   
   ## ZOOM TO EXTENT
@@ -622,13 +621,15 @@ shinyServer(function(input, output, session) {
   output$training.set <- DT::renderDataTable({
     input$action.clear
     validate(need(!is.null(inFile$ts), ""))
-    DT::datatable(selectedData(), options = list(
-      scrollX = TRUE,
-      searching = TRUE,
-      pageLength = nrow(selectedData()),
-      lengthMenu = NULL,
-      extensions = 'Responsive'
-    ))
+    DT::datatable(
+      selectedData(), options = list(
+        scrollX = TRUE,
+        searching = TRUE,
+        pageLength = nrow(selectedData()),
+        lengthMenu = NULL,
+        extensions = 'Responsive'
+      )
+    )
   })
   
   selectedData <- reactive({
@@ -853,20 +854,42 @@ shinyServer(function(input, output, session) {
     plot(lur.model$lm, which = 5)
   })
   
+  ## CROSS VALIDATIONS
   output$model.summary <- renderText({
     if (length(input$training.set_rows_selected) > 0) {
       selected.vars <-
         rownames(selectedData()[input$training.set_rows_selected,])
       equ <-
         paste(input$response, "~", paste(selected.vars, collapse = " + "), sep = " ")
+      
+      ##LOOCV
       train_control <- trainControl(method = "LOOCV")
       loocv <-
         train(
           as.formula(equ), data = inFile$ts, trControl = train_control, method = "lm"
         )
-      lur.loocv <<- paste(
-        equ, "\n\nLOOCV RMSE: ", loocv$results[2], "\nLOOCV R-Squared: ", loocv$results[3], sep = ""
+      print(loocv$results)
+      temp.1 <- paste0(
+        equ, 
+        "\n\nLOOCV RMSE: ", loocv$results[2], 
+        "\nLOOCV R-Squared: ", loocv$results[3], 
+        "\n\n"
       )
+      
+      ##KFOLDS
+      temp.2 <- ""
+      if (nrow(inFile$ts) > 10) {
+        train_control <- trainControl(method = "cv", number = 10)
+        kfolds <- train(
+          as.formula(equ), data = inFile$ts, trControl = train_control, method = "lm"
+        )
+        temp.2 <- paste0(
+          "K(10)-FOLDS RMSE: ", kfolds$results$RMSE,
+        "\nK(10)-FOLDS RMSE SD: ", kfolds$results$RMSESD,
+        "\nK(10)-FOLDS R-Squared: ", kfolds$results$Rsquared,
+        "\nK(10)-FOLDS R-Squared SD: ", kfolds$results$RsquaredSD)
+      }
+      lur.loocv <<- paste0(temp.1, temp.2)
       lur.loocv
     }
   })
@@ -883,7 +906,7 @@ shinyServer(function(input, output, session) {
       addTiles() %>%
       fitBounds(-31, 49, 21, 60)
   })
- 
+  
   ##########################
   ## EXTENT POLYGON DRAWING
   ##########################
@@ -1366,9 +1389,9 @@ shinyServer(function(input, output, session) {
           pred.vars[which(pred.vars %in% roads.vars.length.all) + 1]
         
         progress <-
-          shiny::Progress$new(
-            min = 0, max = length(unique(c(road.buffers.maj, road.buffers.all))) * length(pred.grid)     
-          )
+          shiny::Progress$new(min = 0, max = length(unique(
+            c(road.buffers.maj, road.buffers.all)
+          )) * length(pred.grid))
         progress$set(message = "Computing", value = 0)
         
         new.data <-
@@ -1433,10 +1456,10 @@ shinyServer(function(input, output, session) {
           mn <- min(inFile$ts[, i])
           temp <- matrix(new.data[, i])
           for (j in 1:nrow(new.data)) {
-            if(temp[j] < mn) {
+            if (temp[j] < mn) {
               temp[j] <- mn
             }
-            else if(temp[j] > mx) {
+            else if (temp[j] > mx) {
               temp[j] <- mx
             }
           }
