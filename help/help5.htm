@@ -628,11 +628,10 @@ xmlns="http://www.w3.org/TR/REC-html40">
 @font-face
 	{font-family:"Cambria Math";
 	panose-1:2 4 5 3 5 4 6 3 2 4;
-	mso-font-charset:1;
+	mso-font-charset:0;
 	mso-generic-font-family:roman;
-	mso-font-format:other;
 	mso-font-pitch:variable;
-	mso-font-signature:0 0 0 0 0 0;}
+	mso-font-signature:-536870145 1107305727 0 0 415 0;}
 @font-face
 	{font-family:Calibri;
 	panose-1:2 15 5 2 2 2 4 3 2 4;
@@ -1124,8 +1123,8 @@ style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
 Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'><span
 style='font-family:"Arial",sans-serif'>Scatter</span></b><span
-style='font-family:"Arial",sans-serif'>: a plot of observed vs. predicted values.
-The solid line is a linear best fit, the dashed line is the 1:1 ideal
+style='font-family:"Arial",sans-serif'>: a plot of observed vs. predicted
+values. The solid line is a linear best fit, the dashed line is the 1:1 ideal
 relationship. <o:p></o:p></span></p>
 
 <p class=MsoListParagraph style='margin-bottom:0cm;margin-bottom:.0001pt;
@@ -1199,11 +1198,19 @@ normal'><span style='font-family:"Arial",sans-serif'>&nbsp;</span></p>
 0cm;margin-left:18.0pt;margin-bottom:.0001pt;text-indent:-18.0pt;line-height:
 normal'><span style='font-family:Symbol'>·</span><span style='font-size:7.0pt;
 font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span
-style='font-family:"Arial",sans-serif'>Shows the results (RMSE, R<sup>2</sup>)
-of Leave-one-out cross validation (LOOCV) on the current model. Each of the
-training set points are left out in turn, the model is built and used to <span
-class=GramE>predicted</span> the left out point. The LOOCV result is the
-average of these values.</span></p>
+class=GramE><span style='font-family:"Arial",sans-serif'>Shows</span></span><span
+style='font-family:"Arial",sans-serif'> the results (RMSE, R<sup>2</sup>) of
+Leave-one-out cross validation (LOOCV) and k-folds cross validations on the
+current model. For LOOCV, each of the training set points are left out in turn,
+the model is built and used to <span class=GramE>predicted</span> the left out
+point. The LOOCV result is the average of these values. For k-folds, the
+trainings set is randomly partitioned into k sets. The default value of k set
+here is 10, but this may be changed. So for the default of 10 folds, each one
+of these 10 sets is left out in turn and used as a validation set for a model
+built on the remaining nine sets. Again, RMSE and R<sup>2 </sup>are quoted.<o:p></o:p></span></p>
+
+<p class=MsoListParagraph style='margin-top:0cm;margin-right:0cm;margin-bottom:
+0cm;margin-left:18.0pt;margin-bottom:.0001pt;line-height:normal'><o:p>&nbsp;</o:p></p>
 
 <p class=MsoListParagraph style='margin-top:0cm;margin-right:0cm;margin-bottom:
 0cm;margin-left:18.0pt;margin-bottom:.0001pt;line-height:normal'><span

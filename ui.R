@@ -146,11 +146,13 @@ body <- dashboardBody(
           ),
           column(
             width = 1,
-            div(actionButton("pointextent", label = NULL, icon = icon("globe", lib = "font-awesome")), style = "float:right")
+            div(actionButton(
+              "pointextent", label = NULL, icon = icon("globe", lib = "font-awesome")
+            ), style = "float:right")
           )),
           leafletOutput("monitormap", width = "100%", height = 600)
         )
-      ))    
+      ))
     ),
     tabItem(tabName = "models",
             fluidRow(
@@ -187,6 +189,10 @@ body <- dashboardBody(
                 ),
                 box(
                   title = "Cross validation", status = "primary", width = 12, solidHeader = TRUE,
+                  numericInput(
+                    "kfolds", "Number of k-folds", 10, min = 2, max = NA , step = 1,
+                    width = 150
+                  ),
                   verbatimTextOutput("model.summary")
                 )
               )
@@ -231,8 +237,16 @@ body <- dashboardBody(
             c(
               "Prediction" = 1,
               "Training Set" = 2,
-              "Model details" = 3,
-              "R Workspace" = 4
+              "Model Details" = 3,
+              "R Workspace" = 4,
+              "Correlation Plot" = 5,
+              "Scatter Plot" = 6,
+              "Change Plots" = 7,
+              "Residual-Fitted Plot" = 8,
+              "Normal Q-Q Plot" = 9,
+              "Scale-Location Plot" = 10,
+              "Cooks D Plot" = 11,
+              "Residual-Leverage Plot" = 12
             )
           )),
           column(
@@ -258,9 +272,10 @@ body <- dashboardBody(
                 div(actionLink("help3", "Variable creation"), style = "font-size: 150%"),
                 div(actionLink("help4", "Training set"), style = "font-size: 150%"),
                 div(actionLink("help5", "Model Builder"), style = "font-size: 150%"),
-                div(actionLink("help5a", "Model guidelines"), style = "font-size: 150%"),          
+                div(actionLink("help5a", "Model guidelines"), style = "font-size: 150%"),
                 div(actionLink("help6", "Predictions"), style = "font-size: 150%"),
-                div(actionLink("help7", "Further information"), style = "font-size: 150%")
+                div(actionLink("help7", "Further information"), style = "font-size: 150%"),
+                div(actionLink("help8", "Worked example"), style = "font-size: 150%")
               )
             )
             ,

@@ -765,7 +765,7 @@ shinyServer(function(input, output, session) {
   })
   
   ## PLOTS: CORRELATION MATRIX
-  output$pairs <- renderPlot({
+  pairs.plot <- function() {
     validate(need(!is.null(inFile$ts), ""))
     sel.data <- remove.outliers()
     selected.vars <-
@@ -782,10 +782,13 @@ shinyServer(function(input, output, session) {
           panel.cor
       )
     }
+  }
+  output$pairs <- renderPlot({
+    pairs.plot()
   })
   
   ## PLOTS: OBSERVED AND PREDICTED
-  output$lm.obs.exp <- renderPlot({
+  scatter.plot <- function() {
     validate(need(!is.null(inFile$ts), ""))
     obs <- lur.model$lm$fitted.values + lur.model$lm$residuals
     prd <- lur.model$lm$fitted.values
@@ -797,10 +800,13 @@ shinyServer(function(input, output, session) {
         obs, prd, labels = names(lur.model$lm$fitted.values), cex = 0.7, pos = 4
       )
     }
+  }
+  output$lm.obs.exp <- renderPlot({
+    scatter.plot()
   })
   
   ## PLOTS: CHANGE IN R2, AIC, RMSE
-  output$lm.aic.r2 <- renderPlot({
+  change.plot <- function() {
     validate(need(!is.null(inFile$ts), ""))
     par(mfrow = c(1, 3))
     if (length(lur.model$r2) > 1) {
@@ -822,39 +828,62 @@ shinyServer(function(input, output, session) {
       lines(lur.model$aic[-1])
       axis(1, at = 1:length(lur.model$aic[-1]))
     }
+  }
+  output$lm.aic.r2 <- renderPlot({
+    change.plot()
   })
   
   ## PLOTS: DIAGNOSTICS 1, "Residuals vs Fitted"
-  output$lm.plot.1 <- renderPlot({
+  resfit.plot <- function() {
     validate(need(!is.null(inFile$ts), ""))
-    plot(lur.model$lm, which = 1)
+    plot(lur.model$lm, which = 1)    
+  }
+  output$lm.plot.1 <- renderPlot({
+    resfit.plot()
   })
   
   ## PLOTS: DIAGNOSTICS 2, "Normal Q-Q"
-  output$lm.plot.2 <- renderPlot({
+  QQ.plot <- function() {
     validate(need(!is.null(inFile$ts), ""))
     plot(lur.model$lm, which = 2)
+  }
+  output$lm.plot.2 <- renderPlot({
+    QQ.plot()
   })
   
   ## PLOTS: DIAGNOSTICS 3, "Scale-Location"
-  output$lm.plot.3 <- renderPlot({
+  scaleloc.plot <- function() {
     validate(need(!is.null(inFile$ts), ""))
     plot(lur.model$lm, which = 3)
+  }
+  output$lm.plot.3 <- renderPlot({
+    scaleloc.plot()
   })
   
   ## PLOTS: DIAGNOSTICS 4, "Cook's distance"
-  output$lm.plot.4 <- renderPlot({
+  cooksD.plot <- function() {
     validate(need(!is.null(inFile$ts), ""))
     plot(lur.model$lm, which = 4)
+  }
+  output$lm.plot.4 <- renderPlot({
+    cooksD.plot()
   })
   
   ## PLOTS: DIAGNOSTICS 5, "Residuals vs Leverage"
-  output$lm.plot.5 <- renderPlot({
+  reslev.plot <- function() {
     validate(need(!is.null(inFile$ts), ""))
     plot(lur.model$lm, which = 5)
+  }
+  output$lm.plot.5 <- renderPlot({
+    reslev.plot()
   })
   
   ## CROSS VALIDATIONS
+  kfolds <- reactiveValues()
+  observe({
+    kfolds$k <- as.integer(input$kfolds)
+  })
+  
   output$model.summary <- renderText({
     if (length(input$training.set_rows_selected) > 0) {
       selected.vars <-
@@ -877,16 +906,16 @@ shinyServer(function(input, output, session) {
       
       ##KFOLDS
       temp.2 <- ""
-      if (nrow(inFile$ts) > 10) {
-        train_control <- trainControl(method = "cv", number = 10)
-        kfolds <- train(
+      if (nrow(inFile$ts) > kfolds$k) {
+        train_control <- trainControl(method = "cv", number = kfolds$k)
+        kfoldscv <- train(
           as.formula(equ), data = inFile$ts, trControl = train_control, method = "lm"
         )
         temp.2 <- paste0(
-          "K(10)-FOLDS RMSE: ", kfolds$results$RMSE,
-        "\nK(10)-FOLDS RMSE SD: ", kfolds$results$RMSESD,
-        "\nK(10)-FOLDS R-Squared: ", kfolds$results$Rsquared,
-        "\nK(10)-FOLDS R-Squared SD: ", kfolds$results$RsquaredSD)
+          "K(", kfolds$k ,")-FOLDS RMSE: ", kfoldscv$results$RMSE,
+        "\nK(", kfolds$k ,")-FOLDS RMSE SD: ", kfoldscv$results$RMSESD,
+        "\nK(", kfolds$k ,")-FOLDS R-Squared: ", kfoldscv$results$Rsquared,
+        "\nK(", kfolds$k ,")-FOLDS R-Squared SD: ", kfoldscv$results$RsquaredSD)
       }
       lur.loocv <<- paste0(temp.1, temp.2)
       lur.loocv
@@ -1560,6 +1589,70 @@ shinyServer(function(input, output, session) {
           "lur_model.txt"
         }
       }
+      else if (input$downloadItem == 5) {
+        if (is.null(lur.model$lm)) {
+          stop()
+        }
+        else {
+          "lur_corrplot.png"
+        }
+      }
+      else if (input$downloadItem == 6) {
+        if (is.null(lur.model$lm)) {
+          stop()
+        }
+        else {
+          "lur_scatterplot.png"
+        }
+      }
+      else if (input$downloadItem == 7) {
+        if (is.null(lur.model$lm)) {
+          stop()
+        }
+        else {
+          "lur_changeplot.png"
+        }
+      }
+      else if (input$downloadItem == 8) {
+        if (is.null(lur.model$lm)) {
+          stop()
+        }
+        else {
+          "lur_residualfittedplot.png"
+        }
+      }
+      else if (input$downloadItem == 9) {
+        if (is.null(lur.model$lm)) {
+          stop()
+        }
+        else {
+          "lur_NormalQQplot.png"
+        }
+      }
+      else if (input$downloadItem == 10) {
+        if (is.null(lur.model$lm)) {
+          stop()
+        }
+        else {
+          "lur_ScaleLocationplot.png"
+        }
+      }
+      else if (input$downloadItem == 11) {
+        if (is.null(lur.model$lm)) {
+          stop()
+        }
+        else {
+          "lur_CooksDplot.png"
+        }
+      }
+      else if (input$downloadItem == 12) {
+        if (is.null(lur.model$lm)) {
+          stop()
+        }
+        else {
+          "lur_ResidualLeverageplot.png"
+        }
+      }
       else if (input$downloadItem == 4) {
         "lur_workspace.Rdata"
       }
@@ -1583,6 +1676,46 @@ shinyServer(function(input, output, session) {
       }
       else if (input$downloadItem == 4) {
         save.image(file = file)
+      }
+      else if (input$downloadItem == 5) {
+        png(file)
+        pairs.plot()
+        dev.off()
+      }
+      else if (input$downloadItem == 6) {
+        png(file)
+        scatter.plot()
+        dev.off()
+      }
+      else if (input$downloadItem == 7) {
+        png(file)
+        change.plot()
+        dev.off()
+      }
+      else if (input$downloadItem == 8) {
+        png(file)
+        resfit.plot()
+        dev.off()
+      }
+      else if (input$downloadItem == 9) {
+        png(file)
+        QQ.plot()
+        dev.off()
+      }
+      else if (input$downloadItem == 10) {
+        png(file)
+        scaleloc.plot()
+        dev.off()
+      }
+      else if (input$downloadItem == 11) {
+        png(file)
+        cooksD.plot()
+        dev.off()
+      }
+      else if (input$downloadItem == 12) {
+        png(file)
+        reslev.plot()
+        dev.off()
       }
     }
   )
@@ -1651,6 +1784,11 @@ shinyServer(function(input, output, session) {
   observeEvent(input$help7, {
     output$instructions <- renderText({
       readLines("help/help7.htm")
+    })
+  })
+  observeEvent(input$help8, {
+    output$instructions <- renderText({
+      readLines("help/help8.htm")
     })
   })
 })
