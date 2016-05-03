@@ -1,0 +1,97 @@
+<html>
+
+<head>
+<title>Title</title>
+</head>
+
+<body>
+
+<h1>Worked example</h1>
+<p>&nbsp;</p>
+<p>This provides a quick run through to create an LUR model and prediction using the supplied Bradford test data:</p>
+<h3>Variable Creation</h3>
+<ul>
+<li>Upload the input GIS files from the testData folder:</li>
+</ul>
+<ul>
+<ul>
+<li><strong>Monitoring data</strong>: &lsquo;NO2_sites&rsquo;. Be sure to select ALL the part of the shapefile using Shift+Click. The NO2_sites shapefile has seven parts (.dbf, .shx, .prj&hellip;.) which combine to make the whole file. Be sure to do this each time you upload a shapefile in RLUR</li>
+<li><strong>Landcover data</strong>: &lsquo;Corine&rsquo;. On uploading the attribute containing the 3-digit landcover code needs to be selected with the drop-down. In this case it should automatically be selected as &lsquo;CODE_00n&rsquo;.</li>
+<li><strong>Traffic data</strong>: &lsquo;RoadsOSM_routed&rsquo;. This is a larger dataset, so takes a little longer to upload. Daily total flow and daily HGV attributes need to be selected. Again, these will be automatically filled for this dataset. The definition of a major road needs to be given too. Here we set a major road as anything with more than 5000 total vehicles using it per day. The specific value here will depend on your own study area.</li>
+<li><strong>Population data</strong>: &lsquo;Postcode&rsquo;. The attributes detailing the totals population of the postcode (admin district) and the number of households therein need to be specified.</li>
+<li><strong>Spatial Reference</strong>: All the input GIS data must use the same coordinate system. We must specify which one here using an EPSG code. In this example, the data are projected into the British National Grid, which has EPSG code of 27700. See SpatialReference.org for details on EPSG codes.</li>
+</ul>
+</ul>
+<ul>
+<li>After uploading input data, generate the variables by clicking the three generate buttons in turn. Some of these operations can be lengthy. Progress is reported at the top of the screen and the generate buttons will turn from red to green on successful completion.</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Training Set</h3>
+<ul>
+<li>Switching to the Training Set option lets us see a table of our newly created variables for each of the NO<sub>2</sub> monitoring sites 48 of them in this case.</li>
+</ul>
+<ul>
+<li>We will not use the &lsquo;load existing dataset&rsquo; option here but using this would bypass the generation of variables in step 1) above to save time if you already have created a training set in a previous model run. Also supplied with the test data is a csv file called &lsquo;bradford_NO2_trainingset.csv&rsquo;. This contains the pre-extracted variables exactly as in the table shown on screen now. (The training set can be saved at the end of the LUR modelling exercise).</li>
+</ul>
+<ul>
+<li>It is possible to exclude training set locations from the analysis here. We will come back to this in step 3).</li>
+</ul>
+<ul>
+<li>A map of the training set locations is shown also. Currently, the &lsquo;Object_ID&rsquo; attribute is plotted which is not very useful. Switch to the model builder option in the sidebar and change the &lsquo;response&rsquo; variable with the drop-down to: NO2conc. Switch back to the training set option, the map now shows a plot of measured NO<sub>2</sub> High values in red, lower values in green (the slider just changes the symbol size).</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Model Builder</h3>
+<ul>
+<li>Switch back to the model builder option. You should already have the response variable selected as &lsquo;NO2conc&rsquo; from the previous step.</li>
+</ul>
+<ul>
+<li>We can now start to develop the LUR model by adding and removing variables to see how they perform in the model.</li>
+</ul>
+<ul>
+<li>All available variables are listed in the &lsquo;Variables&rsquo; table along with their correlation to the measured NO<sub>2</sub> concentrations, the percentage of sites with a non-zero value for the variable and the standard deviation of the variable.</li>
+</ul>
+<ul>
+<li>A good place to start would be with the variable most correlated to NO Click on the small up-arrow next to PMCC in the variables table. This will order the variables according to correlation from high to low:</li>
+</ul>
+<ul>
+<ul>
+<li>We can see that HEAVYTRAFLOAD_300 is the most correlated at 0.7036</li>
+<li>Click on HEAVYTRAFLOAD_300 to add it to the model</li>
+<li>We now have an LUR model with one term, the RSq fit is 0.4951 (as shown in the model details table). It is significant because we have 3 stars (***) in the Sig column.</li>
+<li>Add another variable: TRAFLOAD_500. This is not a good addition to the model. Note it is highly correlated to HEAVYTRAFLOAD_300 (0.8858) and we now have a VIF of 4.6419. Also, it hardly increases the RSq or reduces the RMSE. Remove this variable by deselecting it from the table, we automatically go back to a model with just HEAVYTRAFLOAD_300.</li>
+<li>Try and find some more good predictor variables:
+<ul>
+<li>Make sure that they are not overly correlated to variables already in the model. Look at the Correlation plots and VIF factors</li>
+<li>Make sure the variable is sensible. This means that there should not be too many zero values, it is not biased by a couple of extreme values and it corresponds to the expected effect direction. Look at the correlation plots to assess this.</li>
+<li>A new variable should lead to a significant change in RMSE, RSq and AIC. Look at the Change graphs for this, when they start to level off, new variables are not significantly improving to the model.</li>
+<li>Make sure all terms are significant (the stars in the Sig column of the model details table)</li>
+<li>Keep in mind that there may be outliers in the training set. Look at the various diagnostic graphs showing residuals and Cook&rsquo;s D. The most extreme points are labelled by row name in the training set (note that this does not mean they are definitely outliers, just the extremes of the dataset, it is up to you to decide). If you wish to remove a point, switch back to the training set option, click on the relevant row (according to row number), this will automatically be removed and the model recalculated without this point.</li>
+</ul>
+</li>
+</ul>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li>Settle on your final model, a possibility is:
+<ul>
+<li>NO<sub>2</sub> ~ HEAVYTRAFFICLOAD_300 + LDRES_1000 + TRAFNEAR</li>
+<li>This gives an RSq of 0.7146, can you do any better?</li>
+<li>Don&rsquo;t forget to look at the cross validations, these should be similar to those as reported by the full model.</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Predictions</h3>
+<ul>
+<li>Switch to the predictions option. We will now use the model above to make a prediction of NO<sub>2</sub> concentrations over an area of Bradford</li>
+<li>You will see the maximum bounding box of your input GIS layers, this is the maximum extent at which predictions are possible (outside of this, we have no data).</li>
+<li>To define the prediction extent we could use this maximum, but for this example we will define our own area by freehand drawing a polygon on the map.</li>
+<li>Click on the map, somewhere outside Bradford city centre, a green circle will appear &ndash; this is the first vertex of your extent polygon. Continue clicking on the map to define the perimeter of the polygon. To complete the drawing, click back in the initial green circle. The polygon will be closed and coloured in blue.</li>
+<li>Next we need to specify points at which to make predictions within this polygon. These will represent the centre of the pixels in the resultant surface. We need to specify a resolution for the surface, the default here is 500m. This means NO2 predictions will be made over a regular grid of points spaced every 500m.</li>
+<li>Click on &lsquo;Grid&rsquo; and you will see this prediction grid rendered on the screen.</li>
+<li>Click on &lsquo;Predict&rsquo;, LUR variables will now be extracted at each of these grid points and the model applied. The resultant surface will be shown on screen (This may take some time).</li>
+<li>Note that the prediction map as a tif, training set as a csv, model details as a txt and the entire R workspace used or any of the plots from the model builder may be saved from here.</li>
+</ul>
+
+</body>
+</html>

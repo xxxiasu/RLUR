@@ -1,0 +1,48 @@
+<html>
+
+<head>
+<title>Title</title>
+</head>
+
+<body>
+
+<h1>Model guidelines</h1>
+<p>&nbsp;</p>
+<p>Model creation for LUR is a manual, iterative process where the user most add and remove terms to obtain a model that not only reports good performance, but is also meaningful in the terms chosen.</p>
+<p>When using regression analysis for air pollution mapping we should consider the logic of our assumptions.&nbsp; This is partly done by choosing appropriate explanatory variables and buffer sizes to best reflect the pollutant you want to model. This also means we need to place constraints on our regression model, and not let the process be driven by the statistical package. The regression model with the highest R<sup>2</sup> may not necessarily be the most suitable one for mapping pollution.&nbsp;</p>
+<p>Prior to creating a regression model, you should consider your explanatory variables and note their anticipated direction of effect on air pollution. For example, we expect traffic to be positively associated with pollution, but distance from road to be negative.</p>
+<p>&nbsp;</p>
+<h3>Best practice</h3>
+<ul>
+<li>Add variables taking into account their correlation with the pollutant, but avoid adding variables that are correlated with variables already in the model.</li>
+</ul>
+<ul>
+<li>Aim to maximise, R<sup>2 </sup>and RMSE with the most parsimonious model (do not include redundant or unnecessary terms that contribute very little to overall accuracy).</li>
+</ul>
+<ul>
+<li>Check the R<sup>2</sup> fits, VIF and the significance of a term in the model before and after removing a variable:
+<ul>
+<li>Look at the correlation graphs to ensure that correlated predictors are not used</li>
+<li>Look at the change graphs. If adding a term does not lead to a significant change in R<sup>2</sup>, RMSE or AIC then it probably is not worth including</li>
+<li>Look at the model summary table: VIFs should be &lt; 5 and all terms should be significant (marked with a star)</li>
+<li>All variables should conform to the direction of effect (look at the sign of the t-value) and reference this to the table in the description menu. For example, natural land cover has a negative relationship to pollution levels.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Avoid double counting by excluding overlapping buffers. For example, do not include HHOLD_100 and HHOLD_300, remove the least important of the two.</li>
+</ul>
+<ul>
+<li>Check final model for the following and remove outliers as appropriate.
+<ul>
+<li>Influential observations: Cooks D and leverage</li>
+<li>Extreme or negative predictions</li>
+<li>Heteroscedasticity of the residuals</li>
+<li>Normality of the individuals</li>
+<li>LOOCV/K-folds CV will be lower, but should be near to the apparent R<sup>2</sup> and RMSE</li>
+</ul>
+</li>
+</ul>
+
+</body>
+</html>

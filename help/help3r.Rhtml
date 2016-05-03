@@ -1,0 +1,52 @@
+<html>
+
+<head>
+<title>Variable creation</title>
+</head>
+
+<body>
+<h1>Variable creation</h1>
+<p>&nbsp;</p>
+<p>GIS predictor variables are created by clicking on the &lsquo;Variable creation&rsquo; menu item</p>
+<h3>Data Specification</h3>
+<p>IMPORTANT: When importing shapefiles, ensure that you upload ALL individual file elements (.shp, .dbf, .shx, .prj, .sbn) using shift+click or crtl+click in the open dialog. This is a limitation in Shiny&rsquo;s file import method.</p>
+<ul>
+<li><strong>Monitoring</strong>: Define the shapefile for the training set (e.g. NO2_sites.shp)</li>
+</ul>
+<ul>
+<li><strong>Landcover</strong>: Define the shapefile containing CORINE polygons (e.g. Corine.shp). Once the file has been uploaded, the CORINE Code&rsquo; drop-down will be filled. Select the relevant attribute for the CORINE class (e.g. Code_00n)</li>
+</ul>
+<ul>
+<li><strong>Traffic</strong>: Define the shapefile containing road and traffic data (e.g. OSM_routed.shp). Once the file has been uploaded, the drop-downs will be filled. Select the total daily flow attribute (e.g. ALLMV), the daily HGV flow (e.g. HEAVY) and the AADT threshold to define a major road (e.g. 5000 vehicles or more).</li>
+</ul>
+<ul>
+<li><strong>Population</strong>: Define the shapefile containing road and traffic data (e.g. postcode.shp). Once the file has been uploaded, the drop-downs will be filled. Select the attributes containing population (e.g. POPULATION) and&nbsp;household numbers (e.g. HOUSEHOLDS)</li>
+</ul>
+<ul>
+<li><strong>Spatial Reference</strong>: Set the spatial reference (EPSG) code used. It is assumed that all layers have the same coordinate system. See spatialreference.org for more information. The default is 27700, which is the British National Grid.</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Running</h3>
+<p>Variable generation is split into three processes, note that you do not need to run all of them to create a training set, for example if you do not have population data.</p>
+
+<p>Clicking on a &lsquo;Generate&rsquo; button will start the GIS processes. Progress is reported in the menu bar and on completion the generate button will change from red to green. The results will be automatically appended to the training set in the &lsquo;Training set&rsquo; tab.</p>
+<p>A summary and description of the variables created here is given in the Descriptions menu item.</p>
+
+<p>These are computationally intensive processes and may take some time to complete. See the further information section for a faster, but less user-friendly alternative.</p>
+<p>&nbsp;</p>
+<h3>Other Data Sources</h3>
+
+<p>You may input your own GIS data:</p>
+
+<ul>
+<li><strong>Landcover </strong>data be of POLYGON type and must follow the CORINE naming system, i.e. three-digit codes to represent landcover types (e.g. 111 = continuous urban fabric), but it does not have to be CORINE data itself. You may have to reclassify your data accordingly. All full list of codes is available at <a href="http://wiki.openstreetmap.org/wiki/Corine_Land_Cover">http://wiki.openstreetmap.org/wiki/Corine_Land_Cover</a></li>
+</ul>
+<ul>
+<li><strong>Traffic</strong> data must be of LINE type and have at least two attributes: Average daily total vehicle flow and average daily heavy vehicle flow.</li>
+</ul>
+
+<ul>
+<li><strong>Population</strong> data must be of POINT type (i.e. representing the centre of an admin area) and have at least one attribute of population total or total number of households in the specified district.</li>
+</ul>
+</body>
+</html>

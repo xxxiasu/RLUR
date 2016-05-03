@@ -1,0 +1,44 @@
+<html>
+
+<head>
+<title>Title</title>
+</head>
+
+<body>
+
+<h1>Predictions</h1>
+<p>&nbsp;</p>
+<p>Predictions in unsampled areas can be made by clicking on the predictions menu item. Predictions can either be made at a specified set of locations or as a surface within a defined geographic area.</p>
+<p>Note that the data used for predictions needs to be upload in the Variable creation menu item. The extents of available data will automatically be plotted on the map for reference. It is possible to make a prediction using different data than was used to make the model by first extracting a training set and exporting as a csv (see below), then using different GIS files along with the previous csv imported as the training set.</p>
+<p><strong>&nbsp;</strong></p>
+<h3>Prediction extent</h3>
+<ul>
+<li>Select if you want to specify a point shapefile of prediction location. This may be a series of address locations for example. If selecting this option, you will be prompted for a file.</li>
+<li>If generating a surface, define the prediction extent:
+<ul>
+<li>As the maximum defined by the common extent of all inputs</li>
+<li>As a user defined polygon by clicking on the map. Click once to set the first vertex (a green circle will appear), continue clicking to define further vertices. Close the polygon by clicking back in the green circle. Clicking clear will remove the current shape.</li>
+</ul>
+</li>
+<li>Specify a grid resolution based on the current coordinate system. For example, 500 will create a regular grid of points spaced at 500 metres.</li>
+<li>There is also an option to &lsquo;truncate values&rsquo;. This will ensure that if an LUR attribute at a new prediction location is greater or smaller than the maximum or minimum in the training set. This follows the ESCAPE methodology and ensures that we are not making predictions in environments beyond the range of the training set (i.e. extrapolating).</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Run prediction</h3>
+<ul>
+<li>Click on the grid button and this grid will be shown on the map as red points. It will be at these points predictions will be made. Note that the prediction area may be automatically made smaller to account for any buffers used in the predictors.</li>
+<li>Click the predict button to run the prediction. This will generate GIS predictor variables for each point. This is an intensive process and may take some time. On completion, the output is plotted on screen.</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Export</h3>
+<li>Select from the drop-down which item to export then click export;</li>
+<ul>
+<li><strong>Prediction</strong>: The GIS output as a raster (tif) layer or point (shp) layer depending on the option chosen in prediction extent</li>
+<li><strong>Training set</strong>: A csv of the training set used. Useful to import back at a later date to save having to create variables again</li>
+<li><strong>Model details</strong>: A summary of the model created in the model builder which was then used to make the predictions.</li>
+<li><strong>R workspace</strong>: The whole R workspace used in the processing. This can be opened in R and contains all inputs and outputs above.</li>
+<li><strong>Various plots</strong>: The plots from the model builder can be downloaded individually in .png format for the current model.</li>
+</ul>
+
+</body>
+</html>

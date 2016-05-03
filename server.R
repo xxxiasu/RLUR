@@ -1744,51 +1744,51 @@ shinyServer(function(input, output, session) {
   #### HELP TAB ##############################################################################################
   
   output$instructions <- renderText({
-    readLines("help/help1.htm")
+    includeHTML("help/help1r.rhtml")
   })
   observeEvent(input$help1, {
     output$instructions <- renderText({
-      readLines("help/help1.htm")
+      includeHTML("help/help1r.rhtml")
     })
   })
   observeEvent(input$help2, {
     output$instructions <- renderText({
-      readLines("help/help2.htm")
+      includeHTML("help/help2r.rhtml")
     })
   })
   observeEvent(input$help3, {
     output$instructions <- renderText({
-      readLines("help/help3.htm")
+      includeHTML("help/help3r.rhtml")
     })
   })
   observeEvent(input$help4, {
     output$instructions <- renderText({
-      readLines("help/help4.htm")
+      includeHTML("help/help4r.rhtml")
     })
   })
   observeEvent(input$help5, {
     output$instructions <- renderText({
-      readLines("help/help5.htm")
+      includeHTML("help/help5r.rhtml")
     })
   })
   observeEvent(input$help5a, {
     output$instructions <- renderText({
-      readLines("help/help5a.htm")
+      includeHTML("help/help5ar.rhtml")
     })
   })
   observeEvent(input$help6, {
     output$instructions <- renderText({
-      readLines("help/help6.htm")
+      includeHTML("help/help6r.rhtml")
     })
   })
   observeEvent(input$help7, {
     output$instructions <- renderText({
-      readLines("help/help7.htm")
+      includeHTML("help/help7r.rhtml")
     })
   })
   observeEvent(input$help8, {
     output$instructions <- renderText({
-      readLines("help/help8.htm")
+      includeHTML("help/help8r.rhtml")
     })
   })
 })

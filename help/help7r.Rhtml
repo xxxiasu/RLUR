@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<title>Title</title>
+</head>
+
+<body>
+
+<h1>Further information</h1>
+<p>&nbsp;</p>
+<h3>Contact</h3>
+<p>Dr. David Morley<br>
+Department of Epidemiology and Biostatistics<br>
+School of Public Health, Faculty of Medicine<br>
+Imperial College London<br>
+St Mary's Campus, Norfolk Place<br>
+London W2 1PG</p>
+<p>d.morley@imperial.ac.uk</p>
+<p>&nbsp;</p>
+<h3>Faster LUR!</h3>
+<p>PostGIS scripts to generate LUR variables are available here:</p>
+<p>https://github.com/dwmorley/LUR_PostGIS</p>
+<p>This requires knowledge of PostgreSQL and PostGIS, the advantage over the R method used here is that PostGIS is extremely fast and is a better option if you have huge datasets or many points to predict. It does not help with model building though, just variable creation.</p>
+
+<p>&nbsp;</p>
+<h3>R Code</h3>
+<p>Please feel free to modify this software or extract some of the routines to run directly in R. In particular, the GIS operations to generate the variables are given as functions in the 'spatial.R' file. Also, the various buffer sizes used can be altered in the 'global.R' file. All other code to run the predictions, make the model etc. are found in the 'server.R file'. The 'ui.R' is less to do with actual functionality of LUR, but renders the Shiny GUI in RStudio for us.</p>
+
+
+</body>
+</html>

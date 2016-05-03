@@ -1,0 +1,57 @@
+<html>
+
+<head>
+<title>Model Builder</title>
+</head>
+
+<body>
+
+<h1>Model Builder</h1>
+<p>&nbsp;</p>
+<p>See also the next section on &lsquo;model guidance&rsquo; before attempting to create a meaningful model.</p>
+<h3>Variables</h3>
+
+<ul>
+<li>Firstly, use the drop-down to select your response variable (e.g. NO2_conc)</li>
+<li>All available prediction variables are listed along with the PPMC to the selected response variable, the percentage of non-zero values in the attribute and it&rsquo;s standard deviation</li>
+<li>The variable is searchable and can be ordered by PMCC, nonzero or SD</li>
+<li>Click on a variable to include it in a model. Notice that the graphs, model details and validation change to reflect this.</li>
+<li>Add more variables by clicking further rows in the variable table</li>
+<li>Remove a variable by clicking a highlighted row</li>
+<li>Remember that outlier points can be removed by selecting them in the &lsquo;training set&rsquo; tab</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Model details</h3>
+<ul>
+<li>As terms are added and removed, this table gives the summary statistics:</li>
+<li><strong>Estimate</strong>: the parameter estimate</li>
+<li><strong> Error</strong>: the standard error of the parameter estimates</li>
+<li><strong>value</strong>: t-statistic of the regression coefficient. Useful for determining the direction of effect</li>
+<li><strong>Prob</strong>: p-value of the t-statistic. Tests if the term is significant in the model</li>
+<li><strong>Sig</strong>: significance code (as reported by R) for the p-value: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 '' 1</li>
+<li><strong>VIF</strong>: the variance inflation factor. High values indicate correlated predictor variables.</li>
+<li><strong>AIC</strong>: the AIC of the model at the current term</li>
+<li><strong>RMSE</strong>: the root mean squared error at the current term</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Graphs</h3>
+
+<ul>
+<li>As terms are added and removed, this following graphs are plotted. Note that point labels correspond to row names in the training set table for enabling outlier removal.</li>
+<li><strong>Correlation</strong>: the correlation between the predictors and response and between predictors. The lower triangle shows correlation biplots with a smooth line fitted. The upper triangle gives the corresponding PMCC, stronger correlations are symbolised by larger text size.</li>
+<li><strong>Scatter</strong>: a plot of observed vs. predicted values. The solid line is a linear best fit, the dashed line is the 1:1 ideal relationship.</li>
+<li><strong>Change</strong>: Plots showing the change in R<sup>2</sup>, RMSE and AIC as terms are added to the model.</li>
+<li><strong>Residuals-fitted</strong>: fitted (predicted) values plotted against residuals</li>
+<li><strong>Q-Q</strong>: shows if the residuals follow a normal distribution</li>
+<li><strong>Scale-Location</strong>: fitted (predicted) values plotted against standardised residuals</li>
+<li><strong>Cook's D</strong>: Bar chart showing Cook's distance, or how much the regression would change if the point was deleted</li>
+<li><strong>Residuals-Leverage</strong>: residuals plotted against leverage, how much each data point influences the regression</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Cross validation</h3>
+<ul>
+<li>Shows the results (RMSE, R<sup>2</sup>) of Leave-one-out cross validation (LOOCV) and k-folds cross validations on the current model. For LOOCV, each of the training set points are left out in turn, the model is built and used to predicted the left out point. The LOOCV result is the average of these values. For k-folds, the trainings set is randomly partitioned into k sets. The default value of k set here is 10, but this may be changed. So for the default of 10 folds, each one of these 10 sets is left out in turn and used as a validation set for a model built on the remaining nine sets. Again, RMSE and R<sup>2 </sup>are quoted.</li>
+</ul>
+
+</body>
+</html>
