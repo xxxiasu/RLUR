@@ -738,14 +738,16 @@ shinyServer(function(input, output, session) {
             summary(lm.lur)
           )$coefficients[, 4], FUN = get.sig.star))
         )
-      rownames(dt1) <- names(lm.lur$coefficients)
-      dt1 <-
-        dt1[match(c("(Intercept)", input$training.set_rows_selected), rownames(dt1)),]
+
       dt1$VIF <- round(this.lm.lur.vif, 4)
       dt1$RSq <- this.lm.step.r2
       dt1$AIC <- this.lm.step.aic
       dt1$RMSE <- round(this.lm.step.rmse, 4)
-      
+
+      if(nrow(dt1) == 1) {
+        row.names(dt1) <- "(Intercept)"
+      }
+
       lur.model$lm <- lm.lur
       lur.model$r2 <- this.lm.step.r2
       lur.model$rmse <- this.lm.step.rmse
