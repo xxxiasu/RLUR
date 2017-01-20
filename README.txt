@@ -1,3 +1,5 @@
+Developed on R.3.3.2 "Sincere Pumpkin Patch" and RStudio 1.0.136
+
 ######################################################
 ## (1) TO DOWNLOAD
 ######################################################
@@ -5,7 +7,6 @@
 ## CLICK 'Download ZIP' BUTTON IN GITHUB (ABOVE RIGHT)
 ## AND SAVE THE FOLDER SOMEWHERE AND UNZIP
 ## TEST DATA IS IN THE 'testData' FOLDER
-
 
 ######################################################
 ## (2) GET R LIBRARIES
@@ -19,7 +20,6 @@ packages <- c("shinydashboard", "shiny", "car", "DT", "caret", "maptools", "rgda
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }
-
 
 ######################################################
 ## (3) THERE ARE TWO WAYS TO RUN RLUR, BOTH NEED RSTUDIO
