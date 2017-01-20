@@ -4,7 +4,7 @@ Developed on R.3.3.2 "Sincere Pumpkin Patch" and RStudio 1.0.136
 ## (1) TO DOWNLOAD
 ######################################################
 
-## CLICK'Clone or Download' then 'Download ZIP' BUTTON IN GITHUB (THE GREEN ONE ABOVE RIGHT)
+## CLICK 'Clone or Download' then 'Download ZIP' BUTTON IN GITHUB (THE GREEN ONE ABOVE RIGHT)
 ## AND SAVE THE FOLDER SOMEWHERE AND UNZIP
 ## TEST DATA IS IN THE 'testData' FOLDER
 
