@@ -34,8 +34,33 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 ## (B) DIRECTLY FROM GITHUB:
 ## WITH THIS METHOD YOU DO NOT NEED TO DOWNLOAD THE FILES AS IN STEP (1)
 ## JUST RUN THE FOLLOWING CODE IN RSTUDIO
+## Make
 
 require(shiny)
 runGitHub( "RLUR", "dwmorley") 
 
+
 ######################################################
+## (4) RUNNING ON A MAC
+######################################################
+ 
+## There is a dependency issue in the Mac version of the R PROJ4 package resulting in the error:
+## rgdal::checkCRSArgs: no proj_defs.dat in PROJ.4 shared files
+## The solution is to recompile packages from source
+##
+## A) Open a new terminal window to run the commands below (i.e. Not in R, a new command line prompt)
+##
+## B) Install homebrew package manager (http://brew.sh/)
+## /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+##
+## C) Re-compile OSGEO
+## brew tap osgeo/osgeo4mac
+##  
+## D) Update PROJ4
+## brew install proj
+##
+## E) Restart any R sessions
+
+######################################################
+
+
