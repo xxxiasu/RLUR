@@ -34,7 +34,6 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 ## (B) DIRECTLY FROM GITHUB:
 ## WITH THIS METHOD YOU DO NOT NEED TO DOWNLOAD THE FILES AS IN STEP (1)
 ## JUST RUN THE FOLLOWING CODE IN RSTUDIO
-## Make
 
 require(shiny)
 runGitHub( "RLUR", "dwmorley") 
