@@ -11,14 +11,14 @@
 
 
 ### __(1) TO DOWNLOAD__
--CLICK 'Clone or Download' then 'Download ZIP' BUTTON IN GITHUB (THE GREEN ONE ABOVE RIGHT)
--AND SAVE THE FOLDER SOMEWHERE AND UNZIP
--TEST DATA IS IN THE 'testData' FOLDER
+-Click 'Clone or Download' then 'Download zip' button in Github (the green one above right) <br>
+-Save the folder somewhere and unzip <br>
+-Test data is in the 'testdata' folder <br>
 
 ### (2) GET R LIBRARIES
--IN RSTUDIO
--THIS ONLY NEEDS DOING ONCE
--RUN THE FOLLOWING CODE TO DOWNLOAD/INSTALL THE THIRD-PARTY PACKAGES NEEDED
+-In RStudio<br>
+-This needs doing only once<br>
+-Run the following code to download/install the third-party packages needed<br>
 
 ```r
 packages <- c("shinydashboard", "shiny", "car", "DT", "caret", "maptools", "rgdal", "raster", "sp", "rgeos", "leaflet", "shinyBS", "RColorBrewer")
@@ -29,14 +29,14 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 
 ### (3) THERE ARE TWO WAYS TO RUN RLUR, BOTH NEED RSTUDIO
 
--(A) FROM LOCAL FILES:
--OPEN EITHER THE DOWNLOADED 'SERVER.R' OR 'UI.R' FILE FROM (1) IN R STUDIO 
--USE THE DROP-DOWN NEXT TO 'Run App' TO MAKE SURE 'Run External' is checked
--CLICK 'Run App' 
+-(A) From local files:<br>
+-Open either the downloaded 'server.r' or 'ui.r' file from (1) in RStudio<br>
+-Use the drop-down next to 'run app' to make sure 'run external' is checked<br>
+-Click 'Run App'<br>
 
--(B) DIRECTLY FROM GITHUB:
--WITH THIS METHOD YOU DO NOT NEED TO DOWNLOAD THE FILES AS IN STEP (1)
--JUST RUN THE FOLLOWING CODE IN RSTUDIO
+-(B) Directly from GitHub:<br>
+-With this method you do not need to download the files as in step (1)<br>
+-Just run the following code in rstudio<br>
 
 ```r
 require(shiny)
