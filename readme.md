@@ -1,5 +1,5 @@
 
-##__RLUR: A dashboard for developing and applying Land Use Regression models__
+##__RLUR: A dashboard for developing and applying Land Use Regression models for air pollution exposure estimation__
 
 ![s1](/www/s1.png)
 ![s2](/www/s2.png)
