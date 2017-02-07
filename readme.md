@@ -3,7 +3,7 @@
 
 __Developed on R.3.3.2 "Sincere Pumpkin Patch" and RStudio 1.0.136__
 
-
+![s1](/www/s1.png)
 
 
 
