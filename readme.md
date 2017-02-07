@@ -7,6 +7,8 @@
 
 *Developed on R.3.3.2 "Sincere Pumpkin Patch" and RStudio 1.0.136*
 
+*See the help options in the software for more info on LUR and model development*
+
 ### __(1) TO DOWNLOAD__
 -Click 'Clone or Download' then 'Download zip' button in Github (the green one above right) <br>
 -Save the folder somewhere and unzip <br>
