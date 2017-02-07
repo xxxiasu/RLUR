@@ -20,7 +20,7 @@
 -THIS ONLY NEEDS DOING ONCE
 -RUN THE FOLLOWING CODE TO DOWNLOAD/INSTALL THE THIRD-PARTY PACKAGES NEEDED
 
-```javascript
+```r
 packages <- c("shinydashboard", "shiny", "car", "DT", "caret", "maptools", "rgdal", "raster", "sp", "rgeos", "leaflet", "shinyBS", "RColorBrewer")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
@@ -38,8 +38,10 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 -WITH THIS METHOD YOU DO NOT NEED TO DOWNLOAD THE FILES AS IN STEP (1)
 -JUST RUN THE FOLLOWING CODE IN RSTUDIO
 
+```r
 require(shiny)
 runGitHub( "RLUR", "dwmorley") 
+```
 
 ### (4) RUNNING ON A MAC
 
@@ -50,17 +52,21 @@ The solution is to recompile packages from source
 A) Open a new terminal window to run the commands below (i.e. Not in R, a new command line prompt)
 
 B) Install homebrew package manager (http://brew.sh/)
+```r
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
 
 C) Re-compile OSGEO
+```r
 brew tap osgeo/osgeo4mac
+```
   
 D) Update PROJ4
+```r
 brew install proj
+```
 
 E) Restart any R sessions
-
-
 
 
 
