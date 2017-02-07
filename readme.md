@@ -15,7 +15,7 @@
 -Test data is in the 'testdata' folder <br>
 
 ### (2) GET R LIBRARIES
--In RStudio. This needs doing only once<br>
+-In R. This needs doing only once<br>
 -Run the following code to download/install the third-party packages needed<br>
 
 ```r
@@ -38,7 +38,7 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 
 ```r
 require(shiny)
-runGitHub( "RLUR", "dwmorley") 
+runGitHub("RLUR", "dwmorley") 
 ```
 
 ### (4) RUNNING ON A MAC
