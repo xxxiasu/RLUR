@@ -1,8 +1,7 @@
 
 ##__RLUR: A dashboard for developing and applying Land Use Regression models__
 
-
-
+__Developed on R.3.3.2 "Sincere Pumpkin Patch" and RStudio 1.0.136__
 
 
 
@@ -65,8 +64,4 @@ brew install proj
 ```
 E) Restart any R sessions<br>
 
-
-
-
-Developed on R.3.3.2 "Sincere Pumpkin Patch" and RStudio 1.0.136
 
