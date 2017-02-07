@@ -16,8 +16,7 @@
 -Test data is in the 'testdata' folder <br>
 
 ### (2) GET R LIBRARIES
--In RStudio<br>
--This needs doing only once<br>
+-In RStudio. This needs doing only once<br>
 -Run the following code to download/install the third-party packages needed<br>
 
 ```r
@@ -46,27 +45,25 @@ runGitHub( "RLUR", "dwmorley")
 ### (4) RUNNING ON A MAC
 
 There is a dependency issue in the Mac version of the R PROJ4 package resulting in the error:
-rgdal::checkCRSArgs: no proj_defs.dat in PROJ.4 shared files
+```r 
+rgdal::checkCRSArgs: no proj_defs.dat in PROJ.4 shared files 
+```
 The solution is to recompile packages from source
 
-A) Open a new terminal window to run the commands below (i.e. Not in R, a new command line prompt)
-
-B) Install homebrew package manager (http://brew.sh/)
+A) Open a new terminal window to run the commands below (i.e. Not in R, a new command line prompt)<br>
+B) Install homebrew package manager (http://brew.sh/)<br>
 ```r
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
-
-C) Re-compile OSGEO
+C) Re-compile OSGEO<br>
 ```r
 brew tap osgeo/osgeo4mac
 ```
-  
-D) Update PROJ4
+D) Update PROJ4<br>
 ```r
 brew install proj
 ```
-
-E) Restart any R sessions
+E) Restart any R sessions<br>
 
 
 
