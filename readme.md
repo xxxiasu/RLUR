@@ -32,7 +32,7 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 
 -(B) Directly from GitHub:<br>
 -With this method you do not need to download the files as in step (1)<br>
--Just run the following code in rstudio<br>
+-Just run the following code in RStudio<br>
 
 ```r
 require(shiny)
