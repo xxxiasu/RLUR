@@ -1,7 +1,5 @@
-New read me file in md
 
-#RLUR: A dashboard for developing and applying Land Use Regression models
-
+##__RLUR: A dashboard for developing and applying Land Use Regression models__
 
 
 
@@ -11,22 +9,25 @@ New read me file in md
 
 
 
-#### (1) TO DOWNLOAD
+
+### __(1) TO DOWNLOAD__
 -CLICK 'Clone or Download' then 'Download ZIP' BUTTON IN GITHUB (THE GREEN ONE ABOVE RIGHT)
 -AND SAVE THE FOLDER SOMEWHERE AND UNZIP
 -TEST DATA IS IN THE 'testData' FOLDER
 
-#### (2) GET R LIBRARIES
+### (2) GET R LIBRARIES
 -IN RSTUDIO
 -THIS ONLY NEEDS DOING ONCE
 -RUN THE FOLLOWING CODE TO DOWNLOAD/INSTALL THE THIRD-PARTY PACKAGES NEEDED
 
+```javascript
 packages <- c("shinydashboard", "shiny", "car", "DT", "caret", "maptools", "rgdal", "raster", "sp", "rgeos", "leaflet", "shinyBS", "RColorBrewer")
 if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(packages, rownames(installed.packages())))  
 }
+```
 
-#### (3) THERE ARE TWO WAYS TO RUN RLUR, BOTH NEED RSTUDIO
+### (3) THERE ARE TWO WAYS TO RUN RLUR, BOTH NEED RSTUDIO
 
 -(A) FROM LOCAL FILES:
 -OPEN EITHER THE DOWNLOADED 'SERVER.R' OR 'UI.R' FILE FROM (1) IN R STUDIO 
@@ -40,7 +41,7 @@ if (length(setdiff(packages, rownames(installed.packages()))) > 0) {
 require(shiny)
 runGitHub( "RLUR", "dwmorley") 
 
-#### (4) RUNNING ON A MAC
+### (4) RUNNING ON A MAC
 
 There is a dependency issue in the Mac version of the R PROJ4 package resulting in the error:
 rgdal::checkCRSArgs: no proj_defs.dat in PROJ.4 shared files
