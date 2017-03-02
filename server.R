@@ -37,7 +37,11 @@ shinyServer(function(input, output, session) {
         bbox.cor.extent <- slot(bbox.cor, "bbox")
         leafletProxy("mymap", data = dat$corine) %>%
           addPolygons(
-            data = bbox.cor, weight = 3, fillOpacity = 0, color = "green", layerId = "bb.cor"
+            data = bbox.cor,
+            weight = 3,
+            fillOpacity = 0,
+            color = "green",
+            layerId = "bb.cor"
           )
       }
       if (!is.null(dat$roads)) {
@@ -45,7 +49,11 @@ shinyServer(function(input, output, session) {
         bbox.rds.extent <- slot(bbox.rds, "bbox")
         leafletProxy("mymap", data = dat$roads) %>%
           addPolygons(
-            data = bbox.rds, weight = 3, fillOpacity = 0, color = "red", layerId = "bb.rds"
+            data = bbox.rds,
+            weight = 3,
+            fillOpacity = 0,
+            color = "red",
+            layerId = "bb.rds"
           )
       }
       if (!is.null(dat$population)) {
@@ -53,7 +61,11 @@ shinyServer(function(input, output, session) {
         bbox.pop.extent <- slot(bbox.pop, "bbox")
         leafletProxy("mymap", data = dat$population) %>%
           addPolygons(
-            data = bbox.pop, weight = 3, fillOpacity = 0, color = "purple", layerId = "bb.pop"
+            data = bbox.pop,
+            weight = 3,
+            fillOpacity = 0,
+            color = "purple",
+            layerId = "bb.pop"
           )
       }
       
@@ -125,8 +137,12 @@ shinyServer(function(input, output, session) {
     err.code <- get.monitor.shp()
     if (err.code != 0) {
       createAlert(
-        session, "alert0", "Alert", title = "UPLOAD ERROR",
-        content = paste0("Message: ", error.message(err.code)), append = FALSE
+        session,
+        "alert0",
+        "Alert",
+        title = "UPLOAD ERROR",
+        content = paste0("Message: ", error.message(err.code)),
+        append = FALSE
       )
     }
   })
@@ -157,8 +173,12 @@ shinyServer(function(input, output, session) {
     err.code <- get.roads.shp()
     if (err.code != 0) {
       createAlert(
-        session, "alert0", "Alert", title = "UPLOAD ERROR",
-        content = paste0("Message: ", error.message(err.code)), append = FALSE
+        session,
+        "alert0",
+        "Alert",
+        title = "UPLOAD ERROR",
+        content = paste0("Message: ", error.message(err.code)),
+        append = FALSE
       )
     }
   })
@@ -188,8 +208,12 @@ shinyServer(function(input, output, session) {
     err.code <- get.landcover.shp()
     if (err.code != 0) {
       createAlert(
-        session, "alert0", "Alert", title = "UPLOAD ERROR",
-        content = paste0("Message: ", error.message(err.code)), append = FALSE
+        session,
+        "alert0",
+        "Alert",
+        title = "UPLOAD ERROR",
+        content = paste0("Message: ", error.message(err.code)),
+        append = FALSE
       )
     }
   })
@@ -219,8 +243,12 @@ shinyServer(function(input, output, session) {
     err.code <- get.popn.shp()
     if (err.code != 0) {
       createAlert(
-        session, "alert0", "Alert", title = "UPLOAD ERROR",
-        content = paste0("Message: ", error.message(err.code)), append = FALSE
+        session,
+        "alert0",
+        "Alert",
+        title = "UPLOAD ERROR",
+        content = paste0("Message: ", error.message(err.code)),
+        append = FALSE
       )
     }
   })
@@ -250,8 +278,12 @@ shinyServer(function(input, output, session) {
     err.code <- get.exist.csv()
     if (err.code != 0) {
       createAlert(
-        session, "alert0", "Alert", title = "UPLOAD ERROR",
-        content = paste0("Message: ", error.message(err.code)), append = FALSE
+        session,
+        "alert0",
+        "Alert",
+        title = "UPLOAD ERROR",
+        content = paste0("Message: ", error.message(err.code)),
+        append = FALSE
       )
     }
   })
@@ -279,7 +311,8 @@ shinyServer(function(input, output, session) {
   ## PROCESS CORINE BUFFERS
   observeEvent(input$action.corine, {
     progress <-
-      shiny::Progress$new(min = 0, max = length(buffers.1) * length(dat$monitor))
+      shiny::Progress$new(min = 0,
+                          max = length(buffers.1) * length(dat$monitor))
     progress$set(message = "Computing", value = 0)
     on.exit(progress$close())
     updateProgress <- function(value = NULL, detail = NULL) {
@@ -292,14 +325,23 @@ shinyServer(function(input, output, session) {
     tryCatch({
       in.data$val <-
         do.corine(
-          updateProgress, dat$monitor, dat$corine, corine.vars, buffers.1, isolate(input$corinecode)
+          updateProgress,
+          dat$monitor,
+          dat$corine,
+          corine.vars,
+          buffers.1,
+          isolate(input$corinecode)
         )
       gis$corine <- TRUE
     },
     error = function(e) {
       createAlert(
-        session, "alert0", "Alert", title = "SPATIAL OPERATION ERROR",
-        content = paste0("Message: ", error.message(16)), append = FALSE
+        session,
+        "alert0",
+        "Alert",
+        title = "SPATIAL OPERATION ERROR",
+        content = paste0("Message: ", error.message(16)),
+        append = FALSE
       )
       progress$close()
     })
@@ -321,31 +363,48 @@ shinyServer(function(input, output, session) {
     tryCatch({
       in.data$val <-
         do.roads.dists(
-          updateProgress, dat$monitor, dat$roads, roads.vars.nn.maj,
-          roads.vars.nn.all, isolate(input$roadcodetotal),
-          isolate(input$roadcodeHGV), isolate(input$roadmajor)
+          updateProgress,
+          dat$monitor,
+          dat$roads,
+          roads.vars.nn.maj,
+          roads.vars.nn.all,
+          isolate(input$roadcodetotal),
+          isolate(input$roadcodeHGV),
+          isolate(input$roadmajor)
         )
       progress$close()
     },
     error = function(e) {
       progress$close()
       createAlert(
-        session, "alert0", "Alert", title = "SPATIAL OPERATION ERROR",
-        content = paste0("Message: ", error.message(15)), append = FALSE
+        session,
+        "alert0",
+        "Alert",
+        title = "SPATIAL OPERATION ERROR",
+        content = paste0("Message: ", error.message(15)),
+        append = FALSE
       )
     })
     
     progress <-
-      shiny::Progress$new(min = 0, max = length(buffers.2) * length(dat$monitor))
+      shiny::Progress$new(min = 0,
+                          max = length(buffers.2) * length(dat$monitor))
     progress$set(message = "Computing", value = 0)
     on.exit(progress$close())
     tryCatch({
       in.data$val <- cbind(
         in.data$val,
         do.roads.buffer(
-          updateProgress, dat$monitor, dat$roads, roads.vars.length.maj,
-          roads.vars.length.all, buffers.2, buffers.2, isolate(input$roadcodetotal),
-          isolate(input$roadcodeHGV), isolate(input$roadmajor)
+          updateProgress,
+          dat$monitor,
+          dat$roads,
+          roads.vars.length.maj,
+          roads.vars.length.all,
+          buffers.2,
+          buffers.2,
+          isolate(input$roadcodetotal),
+          isolate(input$roadcodeHGV),
+          isolate(input$roadmajor)
         )
       )
       gis$road <- TRUE
@@ -353,8 +412,12 @@ shinyServer(function(input, output, session) {
     error = function(e) {
       progress$close()
       createAlert(
-        session, "alert0", "Alert", title = "SPATIAL OPERATION ERROR",
-        content = paste0("Message: ", error.message(17)), append = FALSE
+        session,
+        "alert0",
+        "Alert",
+        title = "SPATIAL OPERATION ERROR",
+        content = paste0("Message: ", error.message(17)),
+        append = FALSE
       )
     })
   })
@@ -375,16 +438,25 @@ shinyServer(function(input, output, session) {
     tryCatch({
       in.data$val <-
         do.popn(
-          updateProgress, dat$monitor, dat$population, popn.vars,
-          buffers.1, isolate(input$popnpop), isolate(input$popnhhold)
+          updateProgress,
+          dat$monitor,
+          dat$population,
+          popn.vars,
+          buffers.1,
+          isolate(input$popnpop),
+          isolate(input$popnhhold)
         )
       gis$popn <- TRUE
     },
     error = function(e) {
       progress$close()
       createAlert(
-        session, "alert0", "Alert", title = "SPATIAL OPERATION ERROR",
-        content = paste0("Message: ", error.message(18)), append = FALSE
+        session,
+        "alert0",
+        "Alert",
+        title = "SPATIAL OPERATION ERROR",
+        content = paste0("Message: ", error.message(18)),
+        append = FALSE
       )
     })
   })
@@ -399,7 +471,11 @@ shinyServer(function(input, output, session) {
   })
   output$corinecode <- renderUI({
     selectInput(
-      "corinecode", "CORINE Code", choices = corine.attrs(), selected = "CODE_00n", multiple = FALSE
+      "corinecode",
+      "CORINE Code",
+      choices = corine.attrs(),
+      selected = "CODE_00n",
+      multiple = FALSE
     )
   })
   
@@ -409,12 +485,20 @@ shinyServer(function(input, output, session) {
   })
   output$roadcodetotal <- renderUI({
     selectInput(
-      "roadcodetotal", "Daily total flow", choices = road.attrs(), selected = "ALLMV", multiple = FALSE
+      "roadcodetotal",
+      "Daily total flow",
+      choices = road.attrs(),
+      selected = "ALLMV",
+      multiple = FALSE
     )
   })
   output$roadcodeHGV <- renderUI({
     selectInput(
-      "roadcodeHGV", "Daily HGV flow", choices = road.attrs(), selected = "HEAVY", multiple = FALSE
+      "roadcodeHGV",
+      "Daily HGV flow",
+      choices = road.attrs(),
+      selected = "HEAVY",
+      multiple = FALSE
     )
   })
   output$roadmajor <- renderUI({
@@ -427,12 +511,20 @@ shinyServer(function(input, output, session) {
   })
   output$popnpop <- renderUI({
     selectInput(
-      "popnpop", "Population", choices = popn.attrs(), selected = "POPULATION", multiple = FALSE
+      "popnpop",
+      "Population",
+      choices = popn.attrs(),
+      selected = "POPULATION",
+      multiple = FALSE
     )
   })
   output$popnhhold <- renderUI({
     selectInput(
-      "popnhhold", "Households", choices = popn.attrs(), selected = "HOUSEHOLDS", multiple = FALSE
+      "popnhhold",
+      "Households",
+      choices = popn.attrs(),
+      selected = "HOUSEHOLDS",
+      multiple = FALSE
     )
   })
   
@@ -443,13 +535,21 @@ shinyServer(function(input, output, session) {
   output$landcoverGenerate <- renderUI({
     if (gis$corine) {
       box(
-        title = NULL, status = "success", background = "green", width = 12, solidHeader = FALSE,
+        title = NULL,
+        status = "success",
+        background = "green",
+        width = 12,
+        solidHeader = FALSE,
         actionButton("action.corine", label = "Generate")
       )
     }
     else {
       box(
-        title = NULL, status = "danger", background = "red", width = 12, solidHeader = FALSE,
+        title = NULL,
+        status = "danger",
+        background = "red",
+        width = 12,
+        solidHeader = FALSE,
         actionButton("action.corine", label = "Generate")
       )
     }
@@ -458,13 +558,21 @@ shinyServer(function(input, output, session) {
   output$roadGenerate <- renderUI({
     if (gis$road) {
       box(
-        title = NULL, status = "success", background = "green", width = 12, solidHeader = FALSE,
+        title = NULL,
+        status = "success",
+        background = "green",
+        width = 12,
+        solidHeader = FALSE,
         actionButton("action.roads", label = "Generate")
       )
     }
     else {
       box(
-        title = NULL, status = "danger", background = "red", width = 12, solidHeader = FALSE,
+        title = NULL,
+        status = "danger",
+        background = "red",
+        width = 12,
+        solidHeader = FALSE,
         actionButton("action.roads", label = "Generate")
       )
     }
@@ -473,13 +581,21 @@ shinyServer(function(input, output, session) {
   output$popnGenerate <- renderUI({
     if (gis$popn) {
       box(
-        title = NULL, status = "success", background = "green", width = 12, solidHeader = FALSE,
+        title = NULL,
+        status = "success",
+        background = "green",
+        width = 12,
+        solidHeader = FALSE,
         actionButton("action.popn", label = "Generate")
       )
     }
     else {
       box(
-        title = NULL, status = "danger", background = "red", width = 12, solidHeader = FALSE,
+        title = NULL,
+        status = "danger",
+        background = "red",
+        width = 12,
+        solidHeader = FALSE,
         actionButton("action.popn", label = "Generate")
       )
     }
@@ -521,7 +637,8 @@ shinyServer(function(input, output, session) {
     input$action.clear.out
     if (!is.null(inFile$ts)) {
       DT::datatable(
-        inFile$ts, options = list(
+        inFile$ts,
+        options = list(
           scrollX = TRUE,
           ordering = FALSE,
           searching = FALSE,
@@ -537,7 +654,7 @@ shinyServer(function(input, output, session) {
   remove.outliers <- function(x) {
     sel <- input$table.trainingset_rows_selected
     sel.inv <- rownames(inFile$ts)[!rownames(inFile$ts) %in% sel]
-    sel.data <- inFile$ts[sel.inv,]
+    sel.data <- inFile$ts[sel.inv, ]
     return(sel.data)
   }
   
@@ -547,7 +664,10 @@ shinyServer(function(input, output, session) {
     if (!is.null(inFile$ts)) {
       n <- nrow(inFile$ts)
     }
-    paste0(length(input$table.trainingset_rows_selected), " out of ", n," points removed")
+    paste0(length(input$table.trainingset_rows_selected),
+           " out of ",
+           n,
+           " points removed")
   })
   
   ## LEAFLET BASE MAP
@@ -586,13 +706,21 @@ shinyServer(function(input, output, session) {
       clearGroup("outlier") %>% #TODO:
       removeControl("mlegend") %>%
       addCircleMarkers(
-        lng = x@coords[, 1], lat = x@coords[, 2], group = "monitor",
-        radius = isolate(input$pointsize), stroke = FALSE, fillOpacity = 0.7, fill = TRUE,
+        lng = x@coords[, 1],
+        lat = x@coords[, 2],
+        group = "monitor",
+        radius = isolate(input$pointsize),
+        stroke = FALSE,
+        fillOpacity = 0.7,
+        fill = TRUE,
         fillColor = ~ colorNumeric(pal, c(min(attr), max(attr)))(attr)
       ) %>%
       addLegend(
-        position = "bottomleft", pal = colorNumeric(pal, c(min(attr), max(attr))),
-        title = resp, values = attr, layerId = "mlegend"
+        position = "bottomleft",
+        pal = colorNumeric(pal, c(min(attr), max(attr))),
+        title = resp,
+        values = attr,
+        layerId = "mlegend"
       )
   }
   
@@ -603,8 +731,10 @@ shinyServer(function(input, output, session) {
       bbox.monitor.extent <- slot(tmp, "bbox")
       leafletProxy("monitormap") %>%
         fitBounds(
-          bbox.monitor.extent[1, 1], bbox.monitor.extent[2, 1],
-          bbox.monitor.extent[1, 2], bbox.monitor.extent[2, 2]
+          bbox.monitor.extent[1, 1],
+          bbox.monitor.extent[2, 1],
+          bbox.monitor.extent[1, 2],
+          bbox.monitor.extent[2, 2]
         )
     }
   }
@@ -622,7 +752,8 @@ shinyServer(function(input, output, session) {
     input$action.clear
     validate(need(!is.null(inFile$ts), ""))
     DT::datatable(
-      selectedData(), options = list(
+      selectedData(),
+      options = list(
         scrollX = TRUE,
         searching = TRUE,
         pageLength = nrow(selectedData()),
@@ -635,20 +766,23 @@ shinyServer(function(input, output, session) {
   selectedData <- reactive({
     covars <- inFile$ts[, which(names(inFile$ts) != input$response)]
     pmcc <-
-      round(cor(covars[,], inFile$ts[, which(names(inFile$ts) == input$response)], use = "pairwise.complete.obs"), 4)
+      round(cor(covars[, ], inFile$ts[, which(names(inFile$ts) == input$response)], use = "pairwise.complete.obs"), 4)
     nonzero <-
       round(apply(covars, 2, function(x)
         length(which(x != 0))) / (nrow(covars)) * 100, 0)
     options(scipen = 999)
     vsd <- round(apply(covars, 2, sd), 2)
-    data.frame(PPMC = pmcc, nonzero = nonzero, SD = vsd)
+    data.frame(PPMC = pmcc,
+               nonzero = nonzero,
+               SD = vsd)
   })
   
   ## MODEL DATATABLE
   output$model.stats <- DT::renderDataTable({
     validate(need(!is.null(inFile$ts), ""))
     DT::datatable(
-      selectedModel(), options = list(
+      selectedModel(),
+      options = list(
         scrollX = TRUE,
         ordering = FALSE,
         searching = FALSE,
@@ -664,14 +798,17 @@ shinyServer(function(input, output, session) {
     names(inFile$ts)
   })
   output$response <- renderUI({
-    selectInput("response", "Response", choices = outVar(), multiple = FALSE)
+    selectInput("response",
+                "Response",
+                choices = outVar(),
+                multiple = FALSE)
   })
   
   ## SELECTED MODEL
   selectedModel <- reactive({
     tryCatch(
       selected.vars <-
-        rownames(selectedData()[input$training.set_rows_selected,]),
+        rownames(selectedData()[input$training.set_rows_selected, ]),
       sel.data <- remove.outliers(),
       error = function(e) {
         selected.vars <- NULL
@@ -688,8 +825,7 @@ shinyServer(function(input, output, session) {
         LUR <- as.formula((paste(input$response, "~1")))
       }
       else {
-        LUR <-
-          as.formula(paste(input$response, paste(names(inFile$ts)[which(names(inFile$ts) %in% selected.vars)], collapse = " + "), sep = "~"))
+        LUR <- as.formula(paste(input$response, paste(selected.vars, collapse = " + "), sep = "~"))
       }
       
       ## MODEL
@@ -701,21 +837,21 @@ shinyServer(function(input, output, session) {
       this.lm.step.aic <- c(NA)
       this.lm.step.rmse <- c(NA)
       
-      for (v in names(lm.lur$coefficients)) {
-        if (v != "(Intercept)") {
-          var.list.step <- append(var.list.step, v)
-          equ <-
-            as.formula(paste(
-              input$response, paste(var.list.step, collapse = " + "), sep = "~"
-            ))
-          lm.step <- lm(equ, data = sel.data)
-          this.lm.step.r2 <-
-            c(this.lm.step.r2, round(summary(lm.step)$r.squared, 4))
-          this.lm.step.aic <-
-            c(this.lm.step.aic, round(AIC(lm.step), 4))
-          this.lm.step.rmse <-
-            c(this.lm.step.rmse, (summary(lm.step)$sigma))
-        }
+      for (v in selected.vars) {
+        var.list.step <- append(var.list.step, v)
+        equ <-
+          as.formula(paste(
+            input$response,
+            paste(var.list.step, collapse = " + "),
+            sep = "~"
+          ))
+        lm.step <- lm(equ, data = sel.data)
+        this.lm.step.r2 <-
+          c(this.lm.step.r2, round(summary(lm.step)$r.squared, 4))
+        this.lm.step.aic <-
+          c(this.lm.step.aic, round(AIC(lm.step), 4))
+        this.lm.step.rmse <-
+          c(this.lm.step.rmse, (summary(lm.step)$sigma))
       }
       
       ## VIF
@@ -738,16 +874,16 @@ shinyServer(function(input, output, session) {
             summary(lm.lur)
           )$coefficients[, 4], FUN = get.sig.star))
         )
-
+      
       dt1$VIF <- round(this.lm.lur.vif, 4)
       dt1$RSq <- this.lm.step.r2
       dt1$AIC <- this.lm.step.aic
       dt1$RMSE <- round(this.lm.step.rmse, 4)
-
-      if(nrow(dt1) == 1) {
+      
+      if (nrow(dt1) == 1) {
         row.names(dt1) <- "(Intercept)"
       }
-
+      
       lur.model$lm <- lm.lur
       lur.model$r2 <- this.lm.step.r2
       lur.model$rmse <- this.lm.step.rmse
@@ -771,16 +907,24 @@ shinyServer(function(input, output, session) {
     validate(need(!is.null(inFile$ts), ""))
     sel.data <- remove.outliers()
     selected.vars <-
-      rownames(selectedData()[input$training.set_rows_selected,])
+      rownames(selectedData()[input$training.set_rows_selected, ])
     if (length(selected.vars) == 0) {
-      plot(sel.data[, input$response], sel.data[, input$response], xlab = input$response, ylab = input$response)
+      plot(sel.data[, input$response],
+           sel.data[, input$response],
+           xlab = input$response,
+           ylab = input$response)
     }
     else {
       pairs(
         as.formula(paste0(
-          "~", input$response, "+", paste(selected.vars, collapse = " + ")
+          "~",
+          input$response,
+          "+",
+          paste(selected.vars, collapse = " + ")
         )),
-        data = inFile$ts, lower.panel = panel.smooth, upper.panel =
+        data = inFile$ts,
+        lower.panel = panel.smooth,
+        upper.panel =
           panel.cor
       )
     }
@@ -799,7 +943,11 @@ shinyServer(function(input, output, session) {
     abline(lm(prd ~ obs))
     if (input$labels) {
       text(
-        obs, prd, labels = names(lur.model$lm$fitted.values), cex = 0.7, pos = 4
+        obs,
+        prd,
+        labels = names(lur.model$lm$fitted.values),
+        cex = 0.7,
+        pos = 4
       )
     }
   }
@@ -813,19 +961,31 @@ shinyServer(function(input, output, session) {
     par(mfrow = c(1, 3))
     if (length(lur.model$r2) > 1) {
       plot(
-        lur.model$r2[-1], main = "R-Squared", xlab = "Variable", ylab = "R-Squared", xaxt = "n"
+        lur.model$r2[-1],
+        main = "R-Squared",
+        xlab = "Variable",
+        ylab = "R-Squared",
+        xaxt = "n"
       )
       lines(lur.model$r2[-1])
       axis(1, at = 1:length(lur.model$r2[-1]))
       
       plot(
-        lur.model$rmse[-1], main = "RMSE", xlab = "Variable", ylab = "RMSE", xaxt = "n"
+        lur.model$rmse[-1],
+        main = "RMSE",
+        xlab = "Variable",
+        ylab = "RMSE",
+        xaxt = "n"
       )
       lines(lur.model$rmse[-1])
       axis(1, at = 1:length(lur.model$rmse[-1]))
       
       plot(
-        lur.model$aic[-1], main = "AIC", xlab = "Variable", ylab = "AIC", xaxt = "n"
+        lur.model$aic[-1],
+        main = "AIC",
+        xlab = "Variable",
+        ylab = "AIC",
+        xaxt = "n"
       )
       lines(lur.model$aic[-1])
       axis(1, at = 1:length(lur.model$aic[-1]))
@@ -838,7 +998,7 @@ shinyServer(function(input, output, session) {
   ## PLOTS: DIAGNOSTICS 1, "Residuals vs Fitted"
   resfit.plot <- function() {
     validate(need(!is.null(inFile$ts), ""))
-    plot(lur.model$lm, which = 1)    
+    plot(lur.model$lm, which = 1)
   }
   output$lm.plot.1 <- renderPlot({
     resfit.plot()
@@ -889,20 +1049,28 @@ shinyServer(function(input, output, session) {
   output$model.summary <- renderText({
     if (length(input$training.set_rows_selected) > 0) {
       selected.vars <-
-        rownames(selectedData()[input$training.set_rows_selected,])
+        rownames(selectedData()[input$training.set_rows_selected, ])
       equ <-
-        paste(input$response, "~", paste(selected.vars, collapse = " + "), sep = " ")
+        paste(input$response,
+              "~",
+              paste(selected.vars, collapse = " + "),
+              sep = " ")
       
       ##LOOCV
       train_control <- trainControl(method = "LOOCV")
       loocv <-
         train(
-          as.formula(equ), data = inFile$ts, trControl = train_control, method = "lm"
+          as.formula(equ),
+          data = inFile$ts,
+          trControl = train_control,
+          method = "lm"
         )
       temp.1 <- paste0(
-        equ, 
-        "\n\nLOOCV RMSE: ", loocv$results[2], 
-        "\nLOOCV R-Squared: ", loocv$results[3], 
+        equ,
+        "\n\nLOOCV RMSE: ",
+        loocv$results[2],
+        "\nLOOCV R-Squared: ",
+        loocv$results[3],
         "\n\n"
       )
       
@@ -911,13 +1079,29 @@ shinyServer(function(input, output, session) {
       if (nrow(inFile$ts) > kfolds$k) {
         train_control <- trainControl(method = "cv", number = kfolds$k)
         kfoldscv <- train(
-          as.formula(equ), data = inFile$ts, trControl = train_control, method = "lm"
+          as.formula(equ),
+          data = inFile$ts,
+          trControl = train_control,
+          method = "lm"
         )
         temp.2 <- paste0(
-          "K(", kfolds$k ,")-FOLDS RMSE: ", kfoldscv$results$RMSE,
-        "\nK(", kfolds$k ,")-FOLDS RMSE SD: ", kfoldscv$results$RMSESD,
-        "\nK(", kfolds$k ,")-FOLDS R-Squared: ", kfoldscv$results$Rsquared,
-        "\nK(", kfolds$k ,")-FOLDS R-Squared SD: ", kfoldscv$results$RsquaredSD)
+          "K(",
+          kfolds$k ,
+          ")-FOLDS RMSE: ",
+          kfoldscv$results$RMSE,
+          "\nK(",
+          kfolds$k ,
+          ")-FOLDS RMSE SD: ",
+          kfoldscv$results$RMSESD,
+          "\nK(",
+          kfolds$k ,
+          ")-FOLDS R-Squared: ",
+          kfoldscv$results$Rsquared,
+          "\nK(",
+          kfolds$k ,
+          ")-FOLDS R-Squared SD: ",
+          kfoldscv$results$RsquaredSD
+        )
       }
       lur.loocv <<- paste0(temp.1, temp.2)
       lur.loocv
@@ -986,18 +1170,25 @@ shinyServer(function(input, output, session) {
         x <<- x + 1
         leafletProxy("mymap") %>%
           addCircleMarkers(
-            vertices$xy[1, 1], vertices$xy[1, 2],
-            radius = 15, color = "green", layerId = paste0("start", x)
+            vertices$xy[1, 1],
+            vertices$xy[1, 2],
+            radius = 15,
+            color = "green",
+            layerId = paste0("start", x)
           )
       }
       else {
         ## DRAW FINAL POLYGON
         if (nrow(vertices$xy) > 1 &&
-            vertices$xy[1,] == vertices$xy[nrow(vertices$xy),]) {
+            vertices$xy[1, ] == vertices$xy[nrow(vertices$xy), ]) {
           ln <- Polygon(vertices$xy)
           leafletProxy("mymap") %>%
             addPolygons(
-              data = ln, weight = 3, fillOpacity = 0.5, color = "blue", layerId = "bbox"
+              data = ln,
+              weight = 3,
+              fillOpacity = 0.5,
+              color = "blue",
+              layerId = "bbox"
             ) %>%
             removeMarker(layerId = paste0("start", x))
           d$draw <- FALSE
@@ -1007,7 +1198,11 @@ shinyServer(function(input, output, session) {
           ln <- Line(vertices$xy)
           leafletProxy("mymap") %>%
             addPolylines(
-              data = ln, weight = 3, fillOpacity = 0.5, color = "blue", layerId = "bbox"
+              data = ln,
+              weight = 3,
+              fillOpacity = 0.5,
+              color = "blue",
+              layerId = "bbox"
             )
         }
       }
@@ -1079,8 +1274,12 @@ shinyServer(function(input, output, session) {
     err.code <- get.recept.shp()
     if (err.code != 0) {
       createAlert(
-        session, "alert", "Alert", title = "ERROR",
-        content = paste0("Message: ", error.message(err.code)), append = FALSE
+        session,
+        "alert",
+        "Alert",
+        title = "ERROR",
+        content = paste0("Message: ", error.message(err.code)),
+        append = FALSE
       )
     }
   })
@@ -1107,8 +1306,10 @@ shinyServer(function(input, output, session) {
     else if (is.null(dat$roads) &
              any(
                pred.vars %in% c(
-                 roads.vars.length.maj, roads.vars.length.all,
-                 roads.vars.nn.maj, roads.vars.nn.all
+                 roads.vars.length.maj,
+                 roads.vars.length.all,
+                 roads.vars.nn.maj,
+                 roads.vars.nn.all
                )
              )) {
       err.code <- 9
@@ -1131,7 +1332,8 @@ shinyServer(function(input, output, session) {
       pred.grid <<-
         SpatialPoints(coords = slot(readShapePoints(get.shp(
           filename.recept$f
-        )), "coords"), proj4string = CRS(prj))
+        )), "coords"),
+        proj4string = CRS(prj))
       
       ## CLIP TO DATA SOURCES
       tryCatch({
@@ -1154,10 +1356,15 @@ shinyServer(function(input, output, session) {
       leafletProxy("mymap") %>%
         addCircles(
           data = spTransform(pred.grid , CRS("+proj=longlat +datum=WGS84")),
-          fill = TRUE, fillColor = "red", color = "red",
-          radius = 2, weight = 10, fillOpacity = 1, group = "pp"
+          fill = TRUE,
+          fillColor = "red",
+          color = "red",
+          radius = 2,
+          weight = 10,
+          fillOpacity = 1,
+          group = "pp"
         ) %>%
-        fitBounds(ext@bbox[1,1], ext@bbox[2,1], ext@bbox[1,2], ext@bbox[2,2])
+        fitBounds(ext@bbox[1, 1], ext@bbox[2, 1], ext@bbox[1, 2], ext@bbox[2, 2])
       
       rownames(slot(pred.grid, "coords")) <<-
         seq(1:length(pred.grid))
@@ -1208,8 +1415,10 @@ shinyServer(function(input, output, session) {
     else if (is.null(dat$roads) &
              any(
                pred.vars %in% c(
-                 roads.vars.length.maj, roads.vars.length.all,
-                 roads.vars.nn.maj, roads.vars.nn.all
+                 roads.vars.length.maj,
+                 roads.vars.length.all,
+                 roads.vars.nn.maj,
+                 roads.vars.nn.all
                )
              )) {
       err.code <- 9
@@ -1243,7 +1452,9 @@ shinyServer(function(input, output, session) {
       ## MAKE POINT GRID
       tryCatch({
         pred.grid <<-
-          spsample(pred.ext.trans, cellsize = isolate(input$gres), type = "regular")
+          spsample(pred.ext.trans,
+                   cellsize = isolate(input$gres),
+                   type = "regular")
       },
       ## IF NO POINTS, TAKE ONLY CENTROID (IF RESOLUTION SPECIFIED TOO BIG)
       error = function(e) {
@@ -1269,7 +1480,8 @@ shinyServer(function(input, output, session) {
       
       pred.grid <<-
         SpatialPointsDataFrame(
-          coords = slot(pred.grid, "coords"), proj4string = CRS(paste0("+init=epsg:", isolate(epsg$x))),
+          coords = slot(pred.grid, "coords"),
+          proj4string = CRS(paste0("+init=epsg:", isolate(epsg$x))),
           data = data.frame(ID = dimnames(slot(
             pred.grid, "coords"
           ))[[1]])
@@ -1279,14 +1491,23 @@ shinyServer(function(input, output, session) {
       leafletProxy("mymap") %>%
         addCircles(
           data = spTransform(pred.grid , CRS("+proj=longlat +datum=WGS84")),
-          fill = TRUE, fillColor = "red", color = "red",
-          radius = 0.25, weight = 4, fillOpacity = 0, group = "pp"
+          fill = TRUE,
+          fillColor = "red",
+          color = "red",
+          radius = 0.25,
+          weight = 4,
+          fillOpacity = 0,
+          group = "pp"
         )
     }
     else {
       createAlert(
-        session, "alert", "Alert", title = "GRID ERROR",
-        content = paste0("Message: ", error.message(err.code)), append = FALSE
+        session,
+        "alert",
+        "Alert",
+        title = "GRID ERROR",
+        content = paste0("Message: ", error.message(err.code)),
+        append = FALSE
       )
     }
   })
@@ -1301,7 +1522,9 @@ shinyServer(function(input, output, session) {
         max.buffer <-
           as.numeric(max(pred.vars[which(pred.vars %in% corine.vars) + 1]))
         this.bb <-
-          gBuffer(this.bb, byid = TRUE, width = -1 * (max.buffer / 2))
+          gBuffer(this.bb,
+                  byid = TRUE,
+                  width = -1 * (max.buffer / 2))
         pred.grid <<- gIntersection(pred.grid, this.bb, byid = TRUE)
       }
     }
@@ -1320,7 +1543,9 @@ shinyServer(function(input, output, session) {
         as.numeric(max(c(pred.vars[which(pred.vars %in% roads.vars.length.maj) + 1]),
                        pred.vars[which(pred.vars %in% roads.vars.length.all) + 1]))
       this.bb <-
-        gBuffer(this.bb, byid = TRUE, width = as.numeric(max.buffer) / 2)
+        gBuffer(this.bb,
+                byid = TRUE,
+                width = as.numeric(max.buffer) / 2)
       pred.grid <<- gIntersection(pred.grid, this.bb, byid = TRUE)
     }
     else if (length(nn.pred.var.maj) + length(nn.pred.var.all) != 0) {
@@ -1362,8 +1587,12 @@ shinyServer(function(input, output, session) {
     else if (any(!(
       unlist(lapply(names(lur.model$lm$coefficients)[-1], function(x)
         strsplit(x, "_")[[1]][1])) %in% c(
-          corine.vars, roads.vars.length.maj, roads.vars.length.all,
-          roads.vars.nn.maj, roads.vars.nn.all, popn.vars
+          corine.vars,
+          roads.vars.length.maj,
+          roads.vars.length.all,
+          roads.vars.nn.maj,
+          roads.vars.nn.all,
+          popn.vars
         )
     )))
     {
@@ -1378,7 +1607,8 @@ shinyServer(function(input, output, session) {
       ## PREDICTION NEW DATA LOCATIONS
       new.data <- coordinates(pred.grid)
       
-      updateProgress <- function(value = NULL, detail = NULL) {
+      updateProgress <- function(value = NULL,
+                                 detail = NULL) {
         if (is.null(value)) {
           value <- progress$getValue()
           value <- value + 1
@@ -1394,13 +1624,19 @@ shinyServer(function(input, output, session) {
           unique(pred.vars[which(pred.vars %in% corine.vars) + 1])
         
         progress <-
-          shiny::Progress$new(min = 0, max = length(corine.buffers) * length(pred.grid))
+          shiny::Progress$new(min = 0,
+                              max = length(corine.buffers) * length(pred.grid))
         progress$set(message = "Computing", value = 0)
         
         new.data <-
           cbind(
-            new.data, do.corine(
-              updateProgress, pred.grid, dat$corine, corine.pred.vars, corine.buffers,
+            new.data,
+            do.corine(
+              updateProgress,
+              pred.grid,
+              dat$corine,
+              corine.pred.vars,
+              corine.buffers,
               isolate(input$corinecode)
             )
           )
@@ -1419,17 +1655,25 @@ shinyServer(function(input, output, session) {
           pred.vars[which(pred.vars %in% roads.vars.length.all) + 1]
         
         progress <-
-          shiny::Progress$new(min = 0, max = length(unique(
-            c(road.buffers.maj, road.buffers.all)
-          )) * length(pred.grid))
+          shiny::Progress$new(min = 0,
+                              max = length(unique(
+                                c(road.buffers.maj, road.buffers.all)
+                              )) * length(pred.grid))
         progress$set(message = "Computing", value = 0)
         
         new.data <-
           cbind(
-            new.data, do.roads.buffer(
-              updateProgress, pred.grid, dat$roads, roads.pred.var.maj,
-              roads.pred.var.all, road.buffers.maj, road.buffers.all,
-              isolate(input$roadcodetotal), isolate(input$roadcodeHGV),
+            new.data,
+            do.roads.buffer(
+              updateProgress,
+              pred.grid,
+              dat$roads,
+              roads.pred.var.maj,
+              roads.pred.var.all,
+              road.buffers.maj,
+              road.buffers.all,
+              isolate(input$roadcodetotal),
+              isolate(input$roadcodeHGV),
               isolate(input$roadmajor)
             )
           )
@@ -1451,9 +1695,15 @@ shinyServer(function(input, output, session) {
         progress$set(message = "Computing", value = 0)
         new.data <-
           cbind(
-            new.data, do.roads.dists(
-              updateProgress, pred.grid, dat$roads, nn.pred.var.maj, nn.pred.var.all,
-              isolate(input$roadcodetotal), isolate(input$roadcodeHGV),
+            new.data,
+            do.roads.dists(
+              updateProgress,
+              pred.grid,
+              dat$roads,
+              nn.pred.var.maj,
+              nn.pred.var.all,
+              isolate(input$roadcodetotal),
+              isolate(input$roadcodeHGV),
               isolate(input$roadmajor)
             )
           )
@@ -1471,9 +1721,15 @@ shinyServer(function(input, output, session) {
         
         new.data <-
           cbind(
-            new.data, do.popn(
-              updateProgress, pred.grid, dat$population, popn.pred.vars, popn.buffers,
-              isolate(input$popnpop), isolate(input$popnhhold)
+            new.data,
+            do.popn(
+              updateProgress,
+              pred.grid,
+              dat$population,
+              popn.pred.vars,
+              popn.buffers,
+              isolate(input$popnpop),
+              isolate(input$popnhhold)
             )
           )
         progress$close()
@@ -1505,7 +1761,8 @@ shinyServer(function(input, output, session) {
       clear.all()
       if (input$cbrecept == FALSE) {
         r <<- rasterFromXYZ(SpatialPointsDataFrame(
-          coordinates(pred.grid), data.frame("response" = lur.pred)
+          coordinates(pred.grid),
+          data.frame("response" = lur.pred)
         ))
         projection(r) <<- paste0("+init=epsg:", isolate(epsg$x))
         r <<- projectRaster(r, crs = "+proj=longlat +datum=WGS84")
@@ -1523,28 +1780,42 @@ shinyServer(function(input, output, session) {
         leafletProxy("mymap") %>%
           clearGroup("pp") %>%
           addRasterImage(
-            r.samp, colors = pal, opacity = 0.6, layerId = "raster", project = FALSE
+            r.samp,
+            colors = pal,
+            opacity = 0.6,
+            layerId = "raster",
+            project = FALSE
           ) %>%
           addLegend(
-            position = "bottomleft", pal = colorNumeric(pal, c(min(dn), max(dn))),
-            title = isolate(input$response), values = dn
+            position = "bottomleft",
+            pal = colorNumeric(pal, c(min(dn), max(dn))),
+            title = isolate(input$response),
+            values = dn
           )
       }
       else {
         r <<-
-          SpatialPointsDataFrame(coordinates(pred.grid), data.frame("response" = lur.pred), match.ID = FALSE)
+          SpatialPointsDataFrame(coordinates(pred.grid),
+                                 data.frame("response" = lur.pred),
+                                 match.ID = FALSE)
         projection(r) <<- paste0("+init=epsg:", isolate(epsg$x))
         v <- r@data$response
         leafletProxy("mymap") %>%
           clearGroup("pp") %>%
           addCircleMarkers(
             data = spTransform(r , CRS("+proj=longlat +datum=WGS84")),
-            stroke = FALSE, fillOpacity = 0.8, fill = TRUE,
-            fillColor = ~ colorNumeric(pal, r$response)(response), radius = 7, group = "raster"
+            stroke = FALSE,
+            fillOpacity = 0.8,
+            fill = TRUE,
+            fillColor = ~ colorNumeric(pal, r$response)(response),
+            radius = 7,
+            group = "raster"
           ) %>%
           addLegend(
-            position = "bottomleft", pal = colorNumeric(pal, c(min(v), max(v))),
-            title = isolate(input$response), values = v
+            position = "bottomleft",
+            pal = colorNumeric(pal, c(min(v), max(v))),
+            title = isolate(input$response),
+            values = v
           )
       }
       pred.grid <<- NULL
@@ -1552,8 +1823,12 @@ shinyServer(function(input, output, session) {
     }
     else {
       createAlert(
-        session, "alert", "Alert", title = "PREDICTION ERROR",
-        content = paste0("Message: ", error.message(err.code)), append = FALSE
+        session,
+        "alert",
+        "Alert",
+        title = "PREDICTION ERROR",
+        content = paste0("Message: ", error.message(err.code)),
+        append = FALSE
       )
     }
   })
@@ -1665,7 +1940,10 @@ shinyServer(function(input, output, session) {
           writePointsShape(r, fn = file)
         }
         else {
-          writeRaster(r, filename = file, format = "GTiff", overwrite = TRUE)
+          writeRaster(r,
+                      filename = file,
+                      format = "GTiff",
+                      overwrite = TRUE)
         }
       }
       else if (input$downloadItem == 2) {
@@ -1674,7 +1952,9 @@ shinyServer(function(input, output, session) {
       else if (input$downloadItem == 3) {
         tmp <- selectedModel()
         write.table(data.frame(tmp), file = file)
-        write.table(data.frame(lur.loocv), file = file, append = TRUE)
+        write.table(data.frame(lur.loocv),
+                    file = file,
+                    append = TRUE)
       }
       else if (input$downloadItem == 4) {
         save.image(file = file)
@@ -1728,7 +2008,8 @@ shinyServer(function(input, output, session) {
   
   output$table.escape <- DT::renderDataTable({
     DT::datatable(
-      escape, options = list(
+      escape,
+      options = list(
         scrollX = TRUE,
         rownames = FALSE,
         ordering = TRUE,
