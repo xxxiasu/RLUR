@@ -1,5 +1,5 @@
 
-##__RLUR: A dashboard for developing and applying Land Use Regression models for air pollution exposure estimation__
+##RLUR: A dashboard for developing and applying Land Use Regression models for air pollution exposure estimation
 
 ![s1](/www/s1.png)
 ![s2](/www/s2.png)
@@ -9,7 +9,7 @@
 
 *See the help options in the software for more info on LUR and model development*
 
-### __(1) TO DOWNLOAD__
+### (1) TO DOWNLOAD
 -Click 'Clone or Download' then 'Download zip' button in Github (the green one above right) <br>
 -Save the folder somewhere and unzip <br>
 -Test data is in the 'testdata' folder <br>
