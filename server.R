@@ -11,6 +11,8 @@ require(leaflet)
 require(shinyBS)
 require(RColorBrewer)
 
+options(shiny.maxRequestSize=30*1024^2)
+
 shinyServer(function(input, output, session) {
   source("functions.R")
   source("spatial.R")
@@ -1047,64 +1049,66 @@ shinyServer(function(input, output, session) {
   })
   
   output$model.summary <- renderText({
-    if (length(input$training.set_rows_selected) > 0) {
-      selected.vars <-
-        rownames(selectedData()[input$training.set_rows_selected, ])
-      equ <-
-        paste(input$response,
-              "~",
-              paste(selected.vars, collapse = " + "),
-              sep = " ")
-      
-      ##LOOCV
-      train_control <- trainControl(method = "LOOCV")
-      loocv <-
-        train(
-          as.formula(equ),
-          data = inFile$ts,
-          trControl = train_control,
-          method = "lm"
+    if (input$cv) {
+      if (length(input$training.set_rows_selected) > 0) {
+        selected.vars <-
+          rownames(selectedData()[input$training.set_rows_selected, ])
+        equ <-
+          paste(input$response,
+                "~",
+                paste(selected.vars, collapse = " + "),
+                sep = " ")
+        
+        ##LOOCV
+        train_control <- trainControl(method = "LOOCV")
+        loocv <-
+          train(
+            as.formula(equ),
+            data = inFile$ts,
+            trControl = train_control,
+            method = "lm"
+          )
+        temp.1 <- paste0(
+          equ,
+          "\n\nLOOCV RMSE: ",
+          loocv$results[2],
+          "\nLOOCV R-Squared: ",
+          loocv$results[3],
+          "\n\n"
         )
-      temp.1 <- paste0(
-        equ,
-        "\n\nLOOCV RMSE: ",
-        loocv$results[2],
-        "\nLOOCV R-Squared: ",
-        loocv$results[3],
-        "\n\n"
-      )
-      
-      ##KFOLDS
-      temp.2 <- ""
-      if (nrow(inFile$ts) > kfolds$k) {
-        train_control <- trainControl(method = "cv", number = kfolds$k)
-        kfoldscv <- train(
-          as.formula(equ),
-          data = inFile$ts,
-          trControl = train_control,
-          method = "lm"
-        )
-        temp.2 <- paste0(
-          "K(",
-          kfolds$k ,
-          ")-FOLDS RMSE: ",
-          kfoldscv$results$RMSE,
-          "\nK(",
-          kfolds$k ,
-          ")-FOLDS RMSE SD: ",
-          kfoldscv$results$RMSESD,
-          "\nK(",
-          kfolds$k ,
-          ")-FOLDS R-Squared: ",
-          kfoldscv$results$Rsquared,
-          "\nK(",
-          kfolds$k ,
-          ")-FOLDS R-Squared SD: ",
-          kfoldscv$results$RsquaredSD
-        )
+        
+        ##KFOLDS
+        temp.2 <- ""
+        if (nrow(inFile$ts) > kfolds$k) {
+          train_control <- trainControl(method = "cv", number = kfolds$k)
+          kfoldscv <- train(
+            as.formula(equ),
+            data = inFile$ts,
+            trControl = train_control,
+            method = "lm"
+          )
+          temp.2 <- paste0(
+            "K(",
+            kfolds$k ,
+            ")-FOLDS RMSE: ",
+            kfoldscv$results$RMSE,
+            "\nK(",
+            kfolds$k ,
+            ")-FOLDS RMSE SD: ",
+            kfoldscv$results$RMSESD,
+            "\nK(",
+            kfolds$k ,
+            ")-FOLDS R-Squared: ",
+            kfoldscv$results$Rsquared,
+            "\nK(",
+            kfolds$k ,
+            ")-FOLDS R-Squared SD: ",
+            kfoldscv$results$RsquaredSD
+          )
+        }
+        lur.loocv <<- paste0(temp.1, temp.2)
+        lur.loocv
       }
-      lur.loocv <<- paste0(temp.1, temp.2)
-      lur.loocv
     }
   })
   

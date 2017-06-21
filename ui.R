@@ -188,6 +188,7 @@ body <- dashboardBody(
                   DT::dataTableOutput('model.stats')
                 ),
                 box(
+                  checkboxInput("cv", "Carry out cross-validation", value = TRUE),
                   title = "Cross validation", status = "primary", width = 12, solidHeader = TRUE,
                   numericInput(
                     "kfolds", "Number of k-folds", 10, min = 2, max = NA , step = 1,
