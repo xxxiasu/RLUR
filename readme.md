@@ -1,6 +1,9 @@
 
 ## RLUR: A dashboard for developing and applying Land Use Regression models for air pollution exposure estimation
 
+#### Morley, D.W. & Gulliver, J (2018) A land use regression variable generation, modelling and prediction tool for air pollution exposure assessment. Environmental Modelling & Software. 105, 17-23.
+
+
 ![s1](/www/s1.png)
 ![s2](/www/s2.png)
 ![s3](/www/s3.png)
