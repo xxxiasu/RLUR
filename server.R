@@ -1184,7 +1184,7 @@ shinyServer(function(input, output, session) {
       else {
         ## DRAW FINAL POLYGON
         if (nrow(vertices$xy) > 1 &&
-            vertices$xy[1, ] == vertices$xy[nrow(vertices$xy), ]) {
+            all(vertices$xy[1, ] == vertices$xy[nrow(vertices$xy), ])) {
           ln <- Polygon(vertices$xy)
           leafletProxy("mymap") %>%
             addPolygons(
